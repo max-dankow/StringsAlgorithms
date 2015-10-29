@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <fstream>
 
 void algorithmKnuthMorrisPratt(const std::string &text,
                                const std::string &pattern,
@@ -159,7 +160,7 @@ void zFunctionSearchString(const std::string &pattern, const std::string &text, 
     }
 }
 
-void algorithmManacher(const std::string &text, std::vector<int> &palindromeByCenter)
+void algorithmManacherOdd(const std::string &text, std::vector<int> &palindromeByCenter)
 {
     palindromeByCenter.resize(text.length());
     palindromeByCenter[0] = 1;
@@ -201,46 +202,145 @@ void algorithmManacher(const std::string &text, std::vector<int> &palindromeByCe
     }
 }
 
-std::string findLongestPalindrome(const std::string &text)
+void algorithmManacherEven(const std::string &text, std::vector<int> &palindrome)
 {
-    const char DELIMITER = '#';
-    std::string extendedText;
-    extendedText.reserve(text.length() * 2 + 1);
-    for (char c : text)
+    palindrome.resize(text.length());
+    palindrome[0] = 0;
+    int left = 0, right = -1;
+    for (int i = 1; i < text.length(); ++i)
     {
-        extendedText.push_back(DELIMITER);
-        extendedText.push_back(c);
-    }
-    extendedText.push_back(DELIMITER);
-    std::vector<int> palindromeByCenter;
-    algorithmManacher(extendedText, palindromeByCenter);
-    int maxPalindromeLength = 0;
-    int maxPalindromeStart = 0;
-    for (int i = 0; i < palindromeByCenter.size(); ++i)
-    {
-        int currentLength = palindromeByCenter[i] - 1;
-        if (currentLength > maxPalindromeLength)
+        if (i > right)
         {
-            maxPalindromeLength = currentLength;
-            if (extendedText[i] == DELIMITER)
+            int extend;
+            for (extend = 1;
+                 (i - extend >= 0)
+                 && (i + extend - 1 < text.length())
+                 && (text[i + extend - 1] == text[i - extend]);
+                 ++extend);
+            palindrome[i] = extend - 1;
+            left = i - palindrome[i];
+            right = i + palindrome[i] - 1;
+        }
+        else
+        {
+            int mirror = left + right - i + 1;
+            if (palindrome[mirror] + i - 1 <= right)
             {
-                maxPalindromeStart = i / 2 - (currentLength) / 2;
+                palindrome[i] = palindrome[mirror];
             }
             else
             {
-                maxPalindromeStart = (i - 1) / 2 - (currentLength - 1) / 2;
+                int extend;
+                for (extend = 1;
+                     (i - (right - i) - extend >= 0)
+                     && (right + extend - 1 < text.length())
+                     && (text[right + extend - 1] == text[i - (right - i) - extend]);
+                     ++extend);
+                palindrome[i] = right - i + extend - 1;
+                left = i - palindrome[i] + 1;
+                right = i + palindrome[i] - 1;
             }
         }
     }
-    std::string maximumPalindrome(text.begin() + maxPalindromeStart, text.begin() + maxPalindromeStart + maxPalindromeLength);
-    return maximumPalindrome;
 }
+
+//void algorithmManacher(const std::string &text, std::vector<int> &palindromeByCenter, int d)
+//{
+//    palindromeByCenter.resize(text.length());
+//    palindromeByCenter[0] = 1;
+//    int left = 0, right = -1;
+//    for (int i = 0/*1*/; i < text.length(); ++i)
+//    {
+//        if (i > right)
+//        {
+//            int extend;
+//            for (extend = 1;
+//                 (i - extend >= 0)
+//                    && (i + extend - d < text.length())
+//                    && (text[i + extend - d] == text[i - extend]);
+//                 ++extend);
+//            palindromeByCenter[i] = extend - 1;//extend;
+//            left = i - extend + 1;
+//            right = i + extend - 1;
+//        }
+//        else
+//        {
+//            int mirror = left + (right - i + d);
+//            if (palindromeByCenter[mirror] + i - d <= right)
+//            {
+//                palindromeByCenter[i] = palindromeByCenter[mirror];
+//            }
+//            else
+//            {
+//                int extend;
+//                for (extend = 1;
+//                     (i - (right - i) - extend >= 0)
+//                        && (right + extend - d < text.length())
+//                        && (text[right + extend - d] == text[i - (right - i) - extend]);
+//                     ++extend);
+//                palindromeByCenter[i] = right - i + extend;
+//                left = i - palindromeByCenter[i] /*+ 1*/;
+//                right = i + palindromeByCenter[i] - 1;
+//            }
+//        }
+//    }
+//}
+
+//std::string findLongestPalindrome(const std::string &text)
+//{
+//    const char DELIMITER = '#';
+//    std::string extendedText;
+//    extendedText.reserve(text.length() * 2 + 1);
+//    for (size_t i = 0; i < text.length(); ++i)
+//    {
+//        extendedText.push_back(DELIMITER);
+//        extendedText.push_back(text[i]);
+//    }
+//    extendedText.push_back(DELIMITER);
+//    std::vector<int> palindromeByCenter;
+//    algorithmManacher(extendedText, palindromeByCenter);
+//    int maxPalindromeLength = 0;
+//    int maxPalindromeStart = 0;
+//    for (int i = 0; i < palindromeByCenter.size(); ++i)
+//    {
+//        int currentLength = palindromeByCenter[i] - 1;
+//        if (currentLength > maxPalindromeLength)
+//        {
+//            maxPalindromeLength = currentLength;
+//            if (extendedText[i] == DELIMITER)
+//            {
+//                maxPalindromeStart = i / 2 - (currentLength) / 2;
+//            }
+//            else
+//            {
+//                maxPalindromeStart = (i - 1) / 2 - (currentLength - 1) / 2;
+//            }
+//        }
+//    }
+//    std::string maximumPalindrome(text.begin() + maxPalindromeStart, text.begin() + maxPalindromeStart + maxPalindromeLength);
+//    return maximumPalindrome;
+//}
 
 int main()
 {
     std::ios_base::sync_with_stdio(false);
+    std::ifstream input("input.txt");
     std::string text;
-    std::cin >> text;
-    std::cout << findLongestPalindrome(text);
+    input >> text;
+//    std::cout << findLonge\stPalindrome(text);
+    std::vector<int> pal;
+    algorithmManacherOdd(text, pal);
+    for (int length : pal)
+    {
+        std::cout << length << " ";
+    }
+    std::cout << "\n";
+    algorithmManacherEven(text, pal);
+    for (int length : pal)
+    {
+        std::cout << length << " ";
+    }
+    std::cout << "\n";
+    input.close();
     return 0;
 }
