@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <algorithm>
 
 void algorithmKnuthMorrisPratt(const std::string &text,
                                const std::string &pattern,
@@ -286,61 +287,44 @@ void algorithmManacherEven(const std::string &text, std::vector<int> &palindrome
 //    }
 //}
 
-//std::string findLongestPalindrome(const std::string &text)
-//{
-//    const char DELIMITER = '#';
-//    std::string extendedText;
-//    extendedText.reserve(text.length() * 2 + 1);
-//    for (size_t i = 0; i < text.length(); ++i)
-//    {
-//        extendedText.push_back(DELIMITER);
-//        extendedText.push_back(text[i]);
-//    }
-//    extendedText.push_back(DELIMITER);
-//    std::vector<int> palindromeByCenter;
-//    algorithmManacher(extendedText, palindromeByCenter);
-//    int maxPalindromeLength = 0;
-//    int maxPalindromeStart = 0;
-//    for (int i = 0; i < palindromeByCenter.size(); ++i)
-//    {
-//        int currentLength = palindromeByCenter[i] - 1;
-//        if (currentLength > maxPalindromeLength)
-//        {
-//            maxPalindromeLength = currentLength;
-//            if (extendedText[i] == DELIMITER)
-//            {
-//                maxPalindromeStart = i / 2 - (currentLength) / 2;
-//            }
-//            else
-//            {
-//                maxPalindromeStart = (i - 1) / 2 - (currentLength - 1) / 2;
-//            }
-//        }
-//    }
-//    std::string maximumPalindrome(text.begin() + maxPalindromeStart, text.begin() + maxPalindromeStart + maxPalindromeLength);
-//    return maximumPalindrome;
-//}
+std::string findLongestPalindrome(const std::string &text)
+{
+    std::vector<int> palindrome;
+    size_t maxPalStart = 0;
+    size_t maxPalLength = 0;
+    // Ищем максимальные нечетные палиндромы:
+    algorithmManacherOdd(text, palindrome);
+    for (size_t i = 0; i < palindrome.size(); ++i)
+    {
+        size_t currentPalindromeLength = (size_t) (palindrome[i] * 2 - 1);
+        if (currentPalindromeLength > maxPalLength)
+        {
+            maxPalLength = currentPalindromeLength;
+            maxPalStart = i - palindrome[i] + 1;
+        }
+    }
+    // Ищем максимальные четные палиндромы:
+    algorithmManacherEven(text, palindrome);
+    for (size_t i = 0; i < palindrome.size(); ++i)
+    {
+        size_t currentPalindromeLength = (size_t) (palindrome[i] * 2);
+        if (currentPalindromeLength > maxPalLength)
+        {
+            maxPalLength = currentPalindromeLength;
+            maxPalStart = i - palindrome[i];
+        }
+    }
+    return std::string(text.begin() + maxPalStart, text.begin() + maxPalStart + maxPalLength);
+}
 
 int main()
 {
     std::ios_base::sync_with_stdio(false);
-    std::ifstream input("input.txt");
+//    std::ifstream input("input.txt");
     std::string text;
-    input >> text;
-//    std::cout << findLonge\stPalindrome(text);
-    std::vector<int> pal;
-    algorithmManacherOdd(text, pal);
-    for (int length : pal)
-    {
-        std::cout << length << " ";
-    }
-    std::cout << "\n";
-    algorithmManacherEven(text, pal);
-    for (int length : pal)
-    {
-        std::cout << length << " ";
-    }
-    std::cout << "\n";
-    input.close();
+    std::cin >> text;
+//    input >> text;
+    std::cout << findLongestPalindrome(text);
+//    input.close();
     return 0;
 }
