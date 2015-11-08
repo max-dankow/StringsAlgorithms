@@ -48,6 +48,14 @@ TEST(SmallForceChecked, ManualStrings) {
     ASSERT_EQ(stupidMaxPalindrome(""), StringUtils::findLongestPalindrome(""));
     ASSERT_EQ(stupidMaxPalindrome("aba"), StringUtils::findLongestPalindrome("aba"));
     ASSERT_EQ(stupidMaxPalindrome("aaaabb"), StringUtils::findLongestPalindrome("aaaabb"));
+    ASSERT_EQ(stupidMaxPalindrome(
+            "baaaccacaaaaaacaaaaaccbaaacbbcbcacccacccbabacacabbcbaaabbabbcbacccbacaabbcaaccaacccaabbbabacbaabbcabbbabcaacbcab"),
+              StringUtils::findLongestPalindrome(
+                      "baaaccacaaaaaacaaaaaccbaaacbbcbcacccacccbabacacabbcbaaabbabbcbacccbacaabbcaaccaacccaabbbabacbaabbcabbbabcaacbcab"));
+    ASSERT_EQ(stupidMaxPalindrome(
+            "caabccbccacbcbabacccabcaacbabcbccbbccbbccbbacaaabcacaacbabccacbbcbbaabcbbcbabacbaababbcbcaacaccabccbabcacabbcbbabbbbcbabbccaccaaaccaacabbcbbabaacaccabbacabaccbbccbcbcaccccbacbbcaaccccbccabccbba"),
+              StringUtils::findLongestPalindrome(
+                      "caabccbccacbcbabacccabcaacbabcbccbbccbbccbbacaaabcacaacbabccacbbcbbaabcbbcbabacbaababbcbcaacaccabccbabcacabbcbbabbbbcbabbccaccaaaccaacabbcbbabaacaccabbacabaccbbccbcbcaccccbacbbcaaccccbccabccbba"));
 }
 
 std::default_random_engine generator;
@@ -107,7 +115,17 @@ TEST(SmallForceChecked, RandomStringsAny) {
 TEST(SmallForceChecked, RandomStringsABC) {
     for (int i = 0; i < 100; ++i) {
         std::string randomString = generateRandomString(100, 200, 'a', 'c');
-        std::cerr << randomString << "\n";
+//        std::cerr << randomString << "\n";
+        ASSERT_EQ(stupidMaxPalindrome(randomString),
+                  StringUtils::findLongestPalindrome(randomString));
+    }
+
+}
+
+TEST(SmallForceChecked, RandomStringsAB) {
+    for (int i = 0; i < 100; ++i) {
+        std::string randomString = generateRandomString(500, 900, 'a', 'b');
+//        std::cerr << randomString << "\n";
         ASSERT_EQ(stupidMaxPalindrome(randomString),
                   StringUtils::findLongestPalindrome(randomString));
     }

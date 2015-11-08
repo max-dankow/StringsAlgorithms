@@ -223,7 +223,7 @@ void StringUtils::algorithmManacherEven(const std::string &text, std::vector<int
         else
         {
             int mirror = left + right - i + 1;
-            if (palindrome[mirror] + i - 1 <= right)
+            if (palindrome[mirror] + i - 1 </*=*/ right)
             {
                 palindrome[i] = palindrome[mirror];
             }
@@ -236,7 +236,7 @@ void StringUtils::algorithmManacherEven(const std::string &text, std::vector<int
                      && (text[right + extend - 1] == text[i - (right - i) - extend]);
                      ++extend);
                 palindrome[i] = right - i + extend - 1;
-                left = i - palindrome[i] + 1;
+                left = i - palindrome[i] /*+ 1*/;
                 right = i + palindrome[i] - 1;
             }
         }
