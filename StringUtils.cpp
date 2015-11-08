@@ -153,13 +153,13 @@ void StringUtils::zFunctionSearchString(const std::string &pattern, const std::s
     }
 }
 
-void StringUtils::algorithmManacherOdd(const std::string &text, std::vector<int> &palindromeByCenter) {
-    palindromeByCenter.resize(text.length());
+void StringUtils::algorithmManacherOdd(const std::string &text, std::vector<int> &palindrome) {
+    palindrome.resize(text.length());
     if (text.empty())
     {
         return;
     }
-    palindromeByCenter[0] = 1;
+    palindrome[0] = 1;
     int left = 0, right = -1;
     for (int i = 1; i < text.length(); ++i)
     {
@@ -171,16 +171,16 @@ void StringUtils::algorithmManacherOdd(const std::string &text, std::vector<int>
                  && (i + extend < text.length())
                  && (text[i + extend] == text[i - extend]);
                  ++extend);
-            palindromeByCenter[i] = extend;
+            palindrome[i] = extend;
             left = i - extend + 1;
             right = i + extend - 1;
         }
         else
         {
             int mirror = left + (right - i);
-            if (palindromeByCenter[mirror] + i <= right)
+            if (palindrome[mirror] + i <= right)
             {
-                palindromeByCenter[i] = palindromeByCenter[mirror];
+                palindrome[i] = palindrome[mirror];
             }
             else
             {
@@ -190,9 +190,9 @@ void StringUtils::algorithmManacherOdd(const std::string &text, std::vector<int>
                      && (right + extend < text.length())
                      && (text[right + extend] == text[i - (right - i) - extend]);
                      ++extend);
-                palindromeByCenter[i] = right - i + extend;
-                left = i - palindromeByCenter[i] + 1;
-                right = i + palindromeByCenter[i] - 1;
+                palindrome[i] = right - i + extend;
+                left = i - palindrome[i] + 1;
+                right = i + palindrome[i] - 1;
             }
         }
     }
@@ -223,7 +223,7 @@ void StringUtils::algorithmManacherEven(const std::string &text, std::vector<int
         else
         {
             int mirror = left + right - i + 1;
-            if (palindrome[mirror] + i - 1 </*=*/ right)
+            if (palindrome[mirror] + i - 1 < right)
             {
                 palindrome[i] = palindrome[mirror];
             }
@@ -236,7 +236,7 @@ void StringUtils::algorithmManacherEven(const std::string &text, std::vector<int
                      && (text[right + extend - 1] == text[i - (right - i) - extend]);
                      ++extend);
                 palindrome[i] = right - i + extend - 1;
-                left = i - palindrome[i] /*+ 1*/;
+                left = i - palindrome[i];
                 right = i + palindrome[i] - 1;
             }
         }
