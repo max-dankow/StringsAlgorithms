@@ -1,6 +1,5 @@
 #include <gtest/gtest.h>
-#include "StringUtils.h"
-#include <random>
+#include "../StringUtils.h"
 
 bool isPalindrome(const std::string &text) {
     auto begin = text.begin();
@@ -27,6 +26,7 @@ std::string stupidMaxPalindrome(const std::string &text) {
     return maxPalindrome;
 }
 
+// Тесты для поиска максимального палиндрома.
 TEST(CheckerTesting, isPalindromeTests) {
     ASSERT_EQ(false, isPalindrome("abc"));
     ASSERT_EQ(false, isPalindrome("aab"));
@@ -121,6 +121,12 @@ TEST(ForceChecked, RandomStringsAB) {
         ASSERT_EQ(stupidMaxPalindrome(randomString),
                   StringUtils::findLongestPalindrome(randomString));
     }
+}
+
+// Тесты для алгоритма поиска числа подстрок.
+
+TEST(AllSubstringsTests, ManualStrings) {
+    // todo: tests.
 }
 
 int main(int argc, char **argv) {
