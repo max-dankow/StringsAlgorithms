@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "../StringUtils.h"
+#include "../SuffixTreeUtils/SuffixTree.h"
 
 bool isPalindrome(const std::string &text) {
     auto begin = text.begin();

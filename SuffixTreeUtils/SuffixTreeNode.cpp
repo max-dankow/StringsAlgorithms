@@ -8,18 +8,18 @@ void SuffixTreeNode::setSuffixLink(NodeIndex suffixLink) {
     SuffixTreeNode::suffixLink = suffixLink;
 }
 
-size_t SuffixTreeNode::getStart() const {
-    return start;
+size_t SuffixTreeNode::getLabelStart() const {
+    return labelStart;
 }
 
-void SuffixTreeNode::setStart(size_t start) {
-    SuffixTreeNode::start = start;
+void SuffixTreeNode::setLabelStart(size_t labelStart) {
+    SuffixTreeNode::labelStart = labelStart;
 }
 
-size_t SuffixTreeNode::getEnd() const {
-    return end;
+size_t SuffixTreeNode::getLabelLength() const {
+    return labelLength;
 }
 
-void SuffixTreeNode::setEnd(size_t end) {
-    SuffixTreeNode::end = end;
+void SuffixTreeNode::setLabelLength(size_t labelLength) {
+    SuffixTreeNode::labelLength = labelLength;
 }

@@ -2,7 +2,6 @@
 #define STRINGSEARCHING_SUFFIXTREE_H
 
 #include "SuffixTreeNode.h"
-#include <stddef.h>
 #include <string>
 #include <vector>
 

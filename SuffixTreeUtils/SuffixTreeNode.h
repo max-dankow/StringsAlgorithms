@@ -3,7 +3,10 @@
 
 #include "SuffixTree.h"
 #include <vector>
-//#include <stdlib.h>
+#include <map>
+#include <stdlib.h>
+
+typedef std::ptrdiff_t NodeIndex;
 
 class SuffixTreeNode {
 public:
@@ -15,20 +18,23 @@ public:
 
     // Метка ребра представлена индексом начала и конца
     // соответсующей подстроки в исходном тексте.
-    size_t getStart() const;
 
-    void setStart(size_t start);
 
-    size_t getEnd() const;
+    size_t getLabelStart() const;
 
-    void setEnd(size_t end);
+    void setLabelStart(size_t labelStart);
+
+    size_t getLabelLength() const;
+
+    void setLabelLength(size_t labelLength);
 
 private:
     NodeIndex suffixLink;
-    std::vector<NodeIndex> links;
-//    std::map<std::string, SuffixTree::NodeIndex> links;
+    NodeIndex parentNode;
+//    std::vector<NodeIndex> links;
+    std::map<char, NodeIndex> links;
     // Метка ребра - индексы начала и конца подстроки.
-    size_t start, end;
+    size_t labelStart, labelLength;
 private:
 
 };
