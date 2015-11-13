@@ -5,38 +5,33 @@
 #include <vector>
 #include <map>
 #include <stdlib.h>
+#include <memory>
 
-typedef std::ptrdiff_t NodeIndex;
+class SuffixTreeNode;
+
+// Кодирует положение при обходе сжатого суффиксного дерева:
+// вершина, в которую ведет ребро и длинна оставшейся подстроки.
+class Position {
+public:
+    Position(std::shared_ptr<SuffixTreeNode> finish, size_t distance) :
+            finish(finish), distanceToFinish(distance) { }
+
+private:
+    std::shared_ptr<SuffixTreeNode> finish;
+    size_t distanceToFinish;
+};
 
 class SuffixTreeNode {
 public:
-    static const NodeIndex NO_LINK = -1;
 
-    NodeIndex getSuffixLink() const;
-
-    void setSuffixLink(NodeIndex suffixLink);
-
-    // Метка ребра представлена индексом начала и конца
-    // соответсующей подстроки в исходном тексте.
-
-
-    size_t getLabelStart() const;
-
-    void setLabelStart(size_t labelStart);
-
-    size_t getLabelLength() const;
-
-    void setLabelLength(size_t labelLength);
+    SuffixTreeNode(std::shared_ptr<SuffixTreeNode> parent, size_t labelBegin, size_t labelEnd) :
+            parent(parent), labelBegin(labelBegin), labelEnd(labelEnd) { }
 
 private:
-    NodeIndex suffixLink;
-    NodeIndex parentNode;
-//    std::vector<NodeIndex> links;
-    std::map<char, NodeIndex> links;
-    // Метка ребра - индексы начала и конца подстроки.
-    size_t labelStart, labelLength;
-private:
-
+    std::shared_ptr<SuffixTreeNode> parent;
+    std::shared_ptr<SuffixTreeNode> suffixLink;
+    size_t labelBegin, labelEnd;
+    std::map<char, Position> links;
 };
 
 

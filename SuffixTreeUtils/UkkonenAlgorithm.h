@@ -4,7 +4,13 @@
 #include "ISuffixTreeBuilder.h"
 
 class UkkonenAlgorithm : public ISuffixTreeBuilder {
-    virtual SuffixTree buildSuffixTree(std::string);
+public:
+    virtual SuffixTree buildSuffixTree(const std::string &text);
+
+private:
+    Position activePoint;
+
+    void updateTree(SuffixTree &tree, char c);
 };
 
 

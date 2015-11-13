@@ -4,15 +4,15 @@
 #include "SuffixTreeNode.h"
 #include <string>
 #include <vector>
-
-typedef std::ptrdiff_t NodeIndex;
+#include <memory>
 
 class SuffixTree {
 public:
+
     SuffixTree();
 
 private:
-    std::vector<SuffixTreeNode> nodes;
+    std::shared_ptr<SuffixTreeNode> root;
 };
 
 #endif //STRINGSEARCHING_SUFFIXTREE_H
