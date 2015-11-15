@@ -9,9 +9,15 @@
 class SuffixTree {
 public:
 
-    SuffixTree();
+    SuffixTree(std::string text);
 
+    const std::shared_ptr<SuffixTreeNode> &getRoot() const;
+
+//    Position go(Position from, char letter);
+
+    std::string text;
 private:
+//    bool tryGetNextLetter(Position position, char nextLetter);
     std::shared_ptr<SuffixTreeNode> root;
 };
 
