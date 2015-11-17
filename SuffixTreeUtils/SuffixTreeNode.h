@@ -33,10 +33,10 @@ public:
         suffixLink = nullptr;
     }
 
-    void printNode(std::ostream &output, const std::string &text);
+    void printNode(std::ostream &output, const std::string &text, size_t offset);
 
     // Добавляет переход из вершины в сторону другой вершины node по символу c.
-    void addLink(SuffixTreeNode *&node, char c);
+    void addLink(SuffixTreeNode *node, char c);
 
     // Индекс первого символа метки ребра, ведущего из предка.
     size_t getLabelBegin() const;

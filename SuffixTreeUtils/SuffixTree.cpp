@@ -1,10 +1,11 @@
+#include <assert.h>
 #include "SuffixTree.h"
 
 SuffixTree::SuffixTree(std::string text) : text(text) {
     // Создаем фиктивную вершину для унификации операций.
     // Т.к. root.parent будет ссылаться на newBlank, то он не удалится при завершении функции.
     blank = new SuffixTreeNode(nullptr, 0, 0);
-    root = new SuffixTreeNode(nullptr, 0, 0);
+    root = new SuffixTreeNode(nullptr, INFINITY_, 0);
     // Из фиктивной вершины в root ведут ребра со всеми символами алфавита.
     // todo: сделать более универсальное задание алфавита.
     for (char c = 'a'; c <= 'z'; ++c) {
@@ -17,37 +18,49 @@ SuffixTreeNode * SuffixTree::getRoot() const {
     return root;
 }
 
-//Position SuffixTree::go(Position from, char letter) {
-//    Position destination(from.finish, from.distanceToFinish);
-//    // Пробуем продвигаться дальше по ребру.
-//    if (from.distanceToFinish > 0) {
-//        char nextLetter = 0;
-//        assert(tryGetNextLetter(from, nextLetter));
-//        if (nextLetter == letter) {
-//            destination.distanceToFinish--;
-//            return destination;
-//        } else {
-//            // Создать вершину и перейти.
-//        }
-//    } else {
-//        // Иначе пытаемся пройти по нужному ребру из явной вершины.
-//        auto edgeToGo = from.finish->links.find(letter);
-//        if (edgeToGo != from.finish->links.end()) {
-//            return edgeToGo->second;
-//        } else {
-//            // Создать вершину и перейти.
-//        }
-//    }
-////    return Position(SuffixTreeNode*(), 0);
-//}
+bool SuffixTree::canGo(Position from, char letter) {
+    if (from.isExplicit()) {
+        return from.finish->canGo(letter);
+    } else {
+        size_t nextLetterIndex = from.finish->getLabelEnd() - from.distanceToFinish;
+        assert(nextLetterIndex < text.length());
+        return text[nextLetterIndex] == letter;
+    }
+}
 
-//bool SuffixTree::tryGetNextLetter(Position position, char nextLetter) {
-//    if (position.distanceToFinish == 0) {
-//    }
-//    size_t index = position.finish->getLabelEnd() - position.distanceToFinish;
-//    assert(index >= 0 && index < text.length());
-//    return text[index];
-//}
+Position SuffixTree::go(Position from, char letter) {
+    if (from.isExplicit()) {
+        return from.finish->go(letter);
+    } else {
+        if (canGo(from, letter)) {
+            return Position(from.finish, from.distanceToFinish - 1);
+        } else {
+            throw std::logic_error("Wrong letter.");
+        }
+    }
+}
+
 void SuffixTree::printTree(std::ostream &output) {
-    root->printNode(output, text);
+    output << '.';
+    root->printNode(output, text, 0);
+    output << "-------------------------\n";
+}
+
+SuffixTreeNode *SuffixTree::testAndSplit(Position position) {
+    SuffixTreeNode *finishNode = position.finish;
+    if (position.isExplicit()) {
+        return finishNode;
+    }
+    size_t currentLetterIndex = finishNode->getLabelEnd() - position.distanceToFinish;
+    SuffixTreeNode *parent = finishNode->getParent();
+    SuffixTreeNode *newNode = new SuffixTreeNode(parent,
+                                                 finishNode->getLabelBegin(),
+                                                 currentLetterIndex);
+    finishNode->setLabelBegin(currentLetterIndex);
+    finishNode->setParent(newNode);
+    finishNode->setParent(newNode);
+    parent->links.erase(text[newNode->getLabelBegin()]);
+    parent->addLink(newNode, text[newNode->getLabelBegin()]);
+    newNode->addLink(finishNode, text[finishNode->getLabelBegin()]);
+    return newNode;
 }

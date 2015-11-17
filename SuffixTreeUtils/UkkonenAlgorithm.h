@@ -7,8 +7,6 @@
 
 class UkkonenAlgorithm /*: public ISuffixTreeBuilder */{
 public:
-    static const size_t INFINITY_ = std::numeric_limits<size_t>::infinity();
-
     SuffixTree buildSuffixTree(const std::string &text);
 
 private:
@@ -16,7 +14,7 @@ private:
 
     Position findSuffixLink(SuffixTree &tree, Position position);
 
-    SuffixTreeNode *testAndSplit(Position position, size_t index);
+
 };
 
 

@@ -1,6 +1,6 @@
 #include "SuffixTree.h"
 
-void SuffixTreeNode::addLink(SuffixTreeNode *&node, char c) {
+void SuffixTreeNode::addLink(SuffixTreeNode *node, char c) {
     size_t distance = node->getLabelEnd() - node->getLabelBegin();
     links.insert(std::make_pair(c, Position(node, distance - 1)));
 }
@@ -66,15 +66,17 @@ bool Position::isExplicit() {
     return distanceToFinish == 0;
 }
 
-void SuffixTreeNode::printNode(std::ostream &output, const std::string &text) {
-    for (size_t i = 0; i < labelBegin; ++i) {
-        output << ' ';
-    }
-    for (size_t i = labelBegin; i < std::min(labelEnd, text.length()); ++i) {
-        output << ' ';
+void SuffixTreeNode::printNode(std::ostream &output, const std::string &text, size_t offset) {
+    if (labelBegin != SuffixTree::INFINITY_) {
+        for (size_t i = 0; i < offset; ++i) {
+            output << '|';
+        }
+        for (size_t i = labelBegin; i < std::min(labelEnd, text.length()); ++i) {
+            output << text[i];
+        }
     }
     output << "\n";
     for (auto pair : links) {
-        pair.second.finish->printNode(output, text);
+        pair.second.finish->printNode(output, text, offset + 1);
     }
 }

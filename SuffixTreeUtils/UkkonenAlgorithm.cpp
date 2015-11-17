@@ -6,8 +6,8 @@ SuffixTree UkkonenAlgorithm::buildSuffixTree(const std::string &text) {
     SuffixTree suffixTree(text);
     Position activePoint = suffixTree.getRoot()->getPosition();
     for (size_t i = 0; i < text.length(); ++i) {
-        updateTree(suffixTree, i, activePoint);
-//        suffixTree.printTree(std::cout);
+        activePoint = updateTree(suffixTree, i, activePoint);
+        suffixTree.printTree(std::cout);
     }
     return suffixTree;
 }
@@ -15,31 +15,29 @@ SuffixTree UkkonenAlgorithm::buildSuffixTree(const std::string &text) {
 // Добавляет новый символ в дерево, соттветствунно алгоритму.
 // Возвращает новый Active Point.
 Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, Position activePoint) {
-    // Мы в явной вершине.
-    assert(activePoint.distanceToFinish == 0);
+//    // Мы в явной вершине.
+//    assert(activePoint.distanceToFinish == 0);
     char letter = tree.text[index];
-    SuffixTreeNode *lastNode = activePoint.finish;
+    SuffixTreeNode *currentNode = activePoint.finish;// todo: = nullptr.
     // Пока нет ребра но текущему символу, добавляем и переходим по суффиксным ссылкам.
-    while (!activePoint.finish->canGo(letter)) {
-//        auto l = activePoint.finish->links;
-//        auto l2 = tree.blank->links;
-//        std::cout << "fuck you\n";
-//        assert(activePoint.finish != tree.blank);
-        SuffixTreeNode *currentNode = testAndSplit(activePoint, index);
+    while (!tree.canGo(activePoint, letter)) {
+        currentNode = tree.testAndSplit(activePoint);
+        activePoint = currentNode->getPosition();
         // Подвешиваем новую вершину-букву.
-        SuffixTreeNode *newChild(new SuffixTreeNode(currentNode, index, INFINITY_));
+        SuffixTreeNode *newChild = new SuffixTreeNode(currentNode, index, SuffixTree::INFINITY_);
         currentNode->addLink(newChild, letter);
-        lastNode = currentNode;
         assert(currentNode->canGo(letter));
         // Проходим по неявной суффиксной ссылке.
         activePoint = findSuffixLink(tree, activePoint);
+        SuffixTreeNode *explicitSuffixLink = tree.testAndSplit(activePoint);
         // Устанавливаем найденую суффиксную ссылку.
         if (currentNode->getSuffixLink() == nullptr) {
-            currentNode->setSuffixLink(activePoint.finish);
+            currentNode->setSuffixLink(explicitSuffixLink);
         }
+        tree.printTree(std::cerr);
     }
     try {
-        activePoint = lastNode->go(letter);
+        activePoint = tree.go(activePoint, letter);
     } catch (std::logic_error &error) {
         assert(false);
     }
@@ -83,23 +81,10 @@ Position UkkonenAlgorithm::findSuffixLink(SuffixTree &tree, Position position) {
                 currentNode = newPosition.finish;
             } else {
                 // Попадаем на неявную вершину на ребре.
-                Position finalPosition = position;
-                finalPosition.distanceToFinish -= length - 1;
+                Position finalPosition = newPosition;
+                finalPosition.distanceToFinish -= length;
                 return finalPosition;
             }
         }
     }
-}
-
-SuffixTreeNode *UkkonenAlgorithm::testAndSplit(Position position, size_t index) {
-    SuffixTreeNode *finishNode = position.finish;
-    if (position.isExplicit()) {
-        return finishNode;
-    }
-    SuffixTreeNode *parent = finishNode->getParent();
-    SuffixTreeNode *newNode(
-            new SuffixTreeNode(parent, finishNode->getLabelBegin(), index + 1));
-    finishNode->setLabelBegin(index);
-    finishNode->setParent(newNode);
-    return newNode;
 }
