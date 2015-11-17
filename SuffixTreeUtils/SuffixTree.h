@@ -12,8 +12,6 @@
 class SuffixTree {
 public:
 
-    static const size_t INFINITY_ = std::numeric_limits<size_t>::max();
-
     SuffixTree(std::string text);
 
     SuffixTreeNode * getRoot() const;
@@ -29,6 +27,8 @@ public:
     SuffixTreeNode *blank;
 
     SuffixTreeNode *testAndSplit(Position position);
+
+    long long int countSubstrings();
 
 private:
 //    bool tryGetNextLetter(Position position, char nextLetter);

@@ -5,7 +5,7 @@ SuffixTree::SuffixTree(std::string text) : text(text) {
     // Создаем фиктивную вершину для унификации операций.
     // Т.к. root.parent будет ссылаться на newBlank, то он не удалится при завершении функции.
     blank = new SuffixTreeNode(nullptr, 0, 0);
-    root = new SuffixTreeNode(nullptr, INFINITY_, 0);
+    root = new SuffixTreeNode(nullptr, std::numeric_limits<size_t>::max(), 0);
     // Из фиктивной вершины в root ведут ребра со всеми символами алфавита.
     // todo: сделать более универсальное задание алфавита.
     for (char c = 'a'; c <= 'z'; ++c) {
@@ -63,4 +63,8 @@ SuffixTreeNode *SuffixTree::testAndSplit(Position position) {
     parent->addLink(newNode, text[newNode->getLabelBegin()]);
     newNode->addLink(finishNode, text[finishNode->getLabelBegin()]);
     return newNode;
+}
+
+long long int SuffixTree::countSubstrings() {
+    return root->countSubstrings() - 1;
 }

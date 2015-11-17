@@ -7,7 +7,7 @@ SuffixTree UkkonenAlgorithm::buildSuffixTree(const std::string &text) {
     Position activePoint = suffixTree.getRoot()->getPosition();
     for (size_t i = 0; i < text.length(); ++i) {
         activePoint = updateTree(suffixTree, i, activePoint);
-        suffixTree.printTree(std::cout);
+//        suffixTree.printTree(std::cout);
     }
     return suffixTree;
 }
@@ -24,7 +24,7 @@ Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, Position a
         currentNode = tree.testAndSplit(activePoint);
         activePoint = currentNode->getPosition();
         // Подвешиваем новую вершину-букву.
-        SuffixTreeNode *newChild = new SuffixTreeNode(currentNode, index, SuffixTree::INFINITY_);
+        SuffixTreeNode *newChild = new SuffixTreeNode(currentNode, index, tree.text.length());
         currentNode->addLink(newChild, letter);
         assert(currentNode->canGo(letter));
         // Проходим по неявной суффиксной ссылке.
@@ -35,7 +35,7 @@ Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, Position a
         if (currentNode->getSuffixLink() == nullptr) {
             currentNode->setSuffixLink(explicitSuffixLink);
         }
-        tree.printTree(std::cerr);
+//        tree.printTree(std::cerr);
     }
     try {
         activePoint = tree.go(activePoint, letter);

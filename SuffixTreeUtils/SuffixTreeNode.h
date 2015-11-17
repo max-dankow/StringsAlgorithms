@@ -63,6 +63,10 @@ public:
 
     Position getPosition();
 
+    long long int getEdgeLength();
+
+    long long int countSubstrings();
+
     std::map<char, Position> links;
 
 private:

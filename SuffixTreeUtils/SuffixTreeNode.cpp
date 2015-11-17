@@ -67,16 +67,26 @@ bool Position::isExplicit() {
 }
 
 void SuffixTreeNode::printNode(std::ostream &output, const std::string &text, size_t offset) {
-    if (labelBegin != SuffixTree::INFINITY_) {
-        for (size_t i = 0; i < offset; ++i) {
-            output << '|';
-        }
-        for (size_t i = labelBegin; i < std::min(labelEnd, text.length()); ++i) {
-            output << text[i];
-        }
+    for (size_t i = 0; i < offset; ++i) {
+        output << '|';
+    }
+    for (size_t i = labelBegin; i < std::min(labelEnd, text.length()); ++i) {
+        output << text[i];
     }
     output << "\n";
     for (auto pair : links) {
         pair.second.finish->printNode(output, text, offset + 1);
     }
+}
+
+long long SuffixTreeNode::countSubstrings() {
+    long long sum = getEdgeLength();
+    for (auto pair : links) {
+        sum += pair.second.finish->countSubstrings();
+    }
+    return sum;
+}
+
+long long int SuffixTreeNode::getEdgeLength() {
+    return (long long int) (getLabelEnd() - getLabelBegin());
 }
