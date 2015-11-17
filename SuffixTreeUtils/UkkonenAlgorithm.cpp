@@ -30,6 +30,7 @@ Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, Position a
         // Проходим по неявной суффиксной ссылке.
         activePoint = findSuffixLink(tree, activePoint);
         SuffixTreeNode *explicitSuffixLink = tree.testAndSplit(activePoint);
+        activePoint = explicitSuffixLink->getPosition();
         // Устанавливаем найденую суффиксную ссылку.
         if (currentNode->getSuffixLink() == nullptr) {
             currentNode->setSuffixLink(explicitSuffixLink);
@@ -82,7 +83,8 @@ Position UkkonenAlgorithm::findSuffixLink(SuffixTree &tree, Position position) {
             } else {
                 // Попадаем на неявную вершину на ребре.
                 Position finalPosition = newPosition;
-                finalPosition.distanceToFinish -= length;
+                // -1 т.к. newPosition это уже со смещением на 1 символ по ребру.
+                finalPosition.distanceToFinish -= length - 1;
                 return finalPosition;
             }
         }

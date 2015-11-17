@@ -8,6 +8,6 @@ int main()
 //    std::cin >> text;
 //    std::cout << StringUtils::findLongestPalindrome(text);
     UkkonenAlgorithm algorithm;
-    algorithm.buildSuffixTree("xabxac");
+    algorithm.buildSuffixTree("abababa");
     return 0;
 }
