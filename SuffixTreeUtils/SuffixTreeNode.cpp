@@ -1,6 +1,6 @@
 #include "SuffixTree.h"
 
-void SuffixTreeNode::addLink(std::shared_ptr<SuffixTreeNode> &node, char c) {
+void SuffixTreeNode::addLink(SuffixTreeNode *&node, char c) {
     size_t distance = node->getLabelEnd() - node->getLabelBegin();
     links.insert(std::make_pair(c, Position(node, distance - 1)));
 }
@@ -21,12 +21,12 @@ size_t SuffixTreeNode::getLabelEnd() const {
     return labelEnd;
 }
 
-const std::shared_ptr<SuffixTreeNode> &SuffixTreeNode::getParent() const {
+SuffixTreeNode * SuffixTreeNode::getParent() const {
     return parent;
 }
 
-void SuffixTreeNode::setParent(const std::shared_ptr<SuffixTreeNode> &parent) {
-    SuffixTreeNode::parent = parent;
+void SuffixTreeNode::setParent(SuffixTreeNode *parent) {
+    this->parent = parent;
 }
 
 bool SuffixTreeNode::canGo(char letter) {
@@ -36,16 +36,16 @@ bool SuffixTreeNode::canGo(char letter) {
     return links.find(letter) != links.end();
 }
 
-void SuffixTreeNode::setSuffixLink(const std::shared_ptr<SuffixTreeNode> &suffixLink) {
+void SuffixTreeNode::setSuffixLink(SuffixTreeNode *suffixLink) {
     SuffixTreeNode::suffixLink = suffixLink;
 }
 
-const std::shared_ptr<SuffixTreeNode> &SuffixTreeNode::getSuffixLink() const {
+SuffixTreeNode * SuffixTreeNode::getSuffixLink() const {
     return suffixLink;
 }
 
 Position SuffixTreeNode::getPosition() {
-    return Position(std::shared_ptr<SuffixTreeNode>(this), 0);
+    return Position(this, 0);
 }
 
 Position SuffixTreeNode::go(char letter) {

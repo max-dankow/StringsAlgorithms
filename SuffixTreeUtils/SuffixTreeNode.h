@@ -15,12 +15,12 @@ class SuffixTreeNode;
 struct Position {
     Position();
 
-    Position(std::shared_ptr<SuffixTreeNode> finish, size_t distance) :
+    Position(SuffixTreeNode *finish, size_t distance) :
             finish(finish), distanceToFinish(distance) { }
 
     bool isExplicit();
 
-    std::shared_ptr<SuffixTreeNode> finish;
+    SuffixTreeNode *finish;
     size_t distanceToFinish;
 };
 
@@ -28,7 +28,7 @@ struct Position {
 class SuffixTreeNode {
 public:
 
-    SuffixTreeNode(std::shared_ptr<SuffixTreeNode> parent, size_t labelBegin, size_t labelEnd) :
+    SuffixTreeNode(SuffixTreeNode *parent, size_t labelBegin, size_t labelEnd) :
             parent(parent), labelBegin(labelBegin), labelEnd(labelEnd) {
         suffixLink = nullptr;
     }
@@ -36,7 +36,7 @@ public:
     void printNode(std::ostream &output, const std::string &text);
 
     // Добавляет переход из вершины в сторону другой вершины node по символу c.
-    void addLink(std::shared_ptr<SuffixTreeNode> &node, char c);
+    void addLink(SuffixTreeNode *&node, char c);
 
     // Индекс первого символа метки ребра, ведущего из предка.
     size_t getLabelBegin() const;
@@ -53,21 +53,21 @@ public:
     Position go(char letter);
 
     // Указатель на предка.
-    const std::shared_ptr<SuffixTreeNode> &getParent() const;
+    SuffixTreeNode * getParent() const;
 
-    void setParent(const std::shared_ptr<SuffixTreeNode> &parent);
+    void setParent(SuffixTreeNode *parent);
 
-    const std::shared_ptr<SuffixTreeNode> &getSuffixLink() const;
+    SuffixTreeNode * getSuffixLink() const;
 
-    void setSuffixLink(const std::shared_ptr<SuffixTreeNode> &suffixLink);
+    void setSuffixLink(SuffixTreeNode *suffixLink);
 
     Position getPosition();
 
     std::map<char, Position> links;
 
 private:
-    std::shared_ptr<SuffixTreeNode> parent;
-    std::shared_ptr<SuffixTreeNode> suffixLink;
+    SuffixTreeNode *parent;
+    SuffixTreeNode *suffixLink;
     size_t labelBegin, labelEnd;
 };
 

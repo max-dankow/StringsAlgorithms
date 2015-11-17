@@ -16,7 +16,7 @@ private:
 
     Position findSuffixLink(SuffixTree &tree, Position position);
 
-    std::shared_ptr<SuffixTreeNode> testAndSplit(Position position, size_t index);
+    SuffixTreeNode *testAndSplit(Position position, size_t index);
 };
 
 

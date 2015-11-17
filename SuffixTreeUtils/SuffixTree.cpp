@@ -3,8 +3,8 @@
 SuffixTree::SuffixTree(std::string text) : text(text) {
     // Создаем фиктивную вершину для унификации операций.
     // Т.к. root.parent будет ссылаться на newBlank, то он не удалится при завершении функции.
-    blank.reset(new SuffixTreeNode(nullptr, 0, 0));
-    root.reset(new SuffixTreeNode(nullptr, 0, 0));
+    blank = new SuffixTreeNode(nullptr, 0, 0);
+    root = new SuffixTreeNode(nullptr, 0, 0);
     // Из фиктивной вершины в root ведут ребра со всеми символами алфавита.
     // todo: сделать более универсальное задание алфавита.
     for (char c = 'a'; c <= 'z'; ++c) {
@@ -13,7 +13,7 @@ SuffixTree::SuffixTree(std::string text) : text(text) {
     root->setSuffixLink(blank);
 }
 
-const std::shared_ptr<SuffixTreeNode> &SuffixTree::getRoot() const {
+SuffixTreeNode * SuffixTree::getRoot() const {
     return root;
 }
 
@@ -38,7 +38,7 @@ const std::shared_ptr<SuffixTreeNode> &SuffixTree::getRoot() const {
 //            // Создать вершину и перейти.
 //        }
 //    }
-////    return Position(std::shared_ptr<SuffixTreeNode>(), 0);
+////    return Position(SuffixTreeNode*(), 0);
 //}
 
 //bool SuffixTree::tryGetNextLetter(Position position, char nextLetter) {

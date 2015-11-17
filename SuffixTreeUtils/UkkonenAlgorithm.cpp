@@ -18,16 +18,16 @@ Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, Position a
     // Мы в явной вершине.
     assert(activePoint.distanceToFinish == 0);
     char letter = tree.text[index];
-    std::shared_ptr<SuffixTreeNode> lastNode = activePoint.finish;
+    SuffixTreeNode *lastNode = activePoint.finish;
     // Пока нет ребра но текущему символу, добавляем и переходим по суффиксным ссылкам.
     while (!activePoint.finish->canGo(letter)) {
 //        auto l = activePoint.finish->links;
 //        auto l2 = tree.blank->links;
 //        std::cout << "fuck you\n";
 //        assert(activePoint.finish != tree.blank);
-        std::shared_ptr<SuffixTreeNode> currentNode = testAndSplit(activePoint, index);
+        SuffixTreeNode *currentNode = testAndSplit(activePoint, index);
         // Подвешиваем новую вершину-букву.
-        std::shared_ptr<SuffixTreeNode> newChild(new SuffixTreeNode(currentNode, index, INFINITY_));
+        SuffixTreeNode *newChild(new SuffixTreeNode(currentNode, index, INFINITY_));
         currentNode->addLink(newChild, letter);
         lastNode = currentNode;
         assert(currentNode->canGo(letter));
@@ -53,7 +53,7 @@ Position UkkonenAlgorithm::findSuffixLink(SuffixTree &tree, Position position) {
         return position.finish->getSuffixLink()->getPosition();
     }
     // Находим ближайшего явного предка.
-    std::shared_ptr<SuffixTreeNode> parent = position.finish->getParent();
+    SuffixTreeNode *parent = position.finish->getParent();
     // Запоминаем, по какой строке придется спускаться после перехода.
     auto stringBegin = tree.text.begin() + position.finish->getLabelBegin();
     auto stringEnd = tree.text.begin()
@@ -61,7 +61,7 @@ Position UkkonenAlgorithm::findSuffixLink(SuffixTree &tree, Position position) {
                      - position.distanceToFinish;
     // Осуществляем переход по суффиксной ссылке.
     assert(parent->getSuffixLink() != nullptr);
-    std::shared_ptr<SuffixTreeNode> currentNode = parent->getSuffixLink();
+    SuffixTreeNode *currentNode = parent->getSuffixLink();
     // Спускаемся на соответствующую подстроку вниз.
     auto iterator = stringBegin;
     while (iterator != stringEnd) {
@@ -91,13 +91,13 @@ Position UkkonenAlgorithm::findSuffixLink(SuffixTree &tree, Position position) {
     }
 }
 
-std::shared_ptr<SuffixTreeNode> UkkonenAlgorithm::testAndSplit(Position position, size_t index) {
-    std::shared_ptr<SuffixTreeNode> finishNode = position.finish;
+SuffixTreeNode *UkkonenAlgorithm::testAndSplit(Position position, size_t index) {
+    SuffixTreeNode *finishNode = position.finish;
     if (position.isExplicit()) {
         return finishNode;
     }
-    std::shared_ptr<SuffixTreeNode> parent = finishNode->getParent();
-    std::shared_ptr<SuffixTreeNode> newNode(
+    SuffixTreeNode *parent = finishNode->getParent();
+    SuffixTreeNode *newNode(
             new SuffixTreeNode(parent, finishNode->getLabelBegin(), index + 1));
     finishNode->setLabelBegin(index);
     finishNode->setParent(newNode);
