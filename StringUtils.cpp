@@ -262,7 +262,7 @@ std::string StringUtils::findLongestPalindrome(const std::string &text) {
     algorithmManacherEven(text, palindrome);
     for (int i = 0; i < palindrome.size(); ++i)
     {
-        int currentPalindromeLength = (int) (palindrome[i] * 2);
+        int currentPalindromeLength = palindrome[i] * 2;
         if (currentPalindromeLength > maxPalLength)
         {
             maxPalLength = currentPalindromeLength;

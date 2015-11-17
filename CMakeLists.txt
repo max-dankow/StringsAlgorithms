@@ -9,4 +9,4 @@ add_executable(Tests ${SOURCE_FILES})
 add_library(StringUtils StringUtils.cpp StringUtils.h)
 add_subdirectory(SuffixTreeUtils)
 
-target_link_libraries(Tests gtest StringUtils)
+target_link_libraries(Tests gtest StringUtils SuffixTreeUtils)

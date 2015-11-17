@@ -1,6 +1,7 @@
 #include <gtest/gtest.h>
 #include "../StringUtils.h"
 #include "../SuffixTreeUtils/SuffixTree.h"
+#include "../SuffixTreeUtils/UkkonenAlgorithm.h"
 
 bool isPalindrome(const std::string &text) {
     auto begin = text.begin();
@@ -127,7 +128,8 @@ TEST(ForceChecked, RandomStringsAB) {
 // Тесты для алгоритма поиска числа подстрок.
 
 TEST(AllSubstringsTests, ManualStrings) {
-    // todo: tests.
+    UkkonenAlgorithm ukkonenAlgorithm;
+    ukkonenAlgorithm.buildSuffixTree("abacaba");
 }
 
 int main(int argc, char **argv) {

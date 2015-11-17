@@ -30,6 +30,9 @@ void SuffixTreeNode::setParent(const std::shared_ptr<SuffixTreeNode> &parent) {
 }
 
 bool SuffixTreeNode::canGo(char letter) {
+//    auto l = links;
+//    auto search = links.find(letter);
+//    std::cerr << search->first << '\n';
     return links.find(letter) != links.end();
 }
 
@@ -61,4 +64,17 @@ Position::Position() {
 
 bool Position::isExplicit() {
     return distanceToFinish == 0;
+}
+
+void SuffixTreeNode::printNode(std::ostream &output, const std::string &text) {
+    for (size_t i = 0; i < labelBegin; ++i) {
+        output << ' ';
+    }
+    for (size_t i = labelBegin; i < std::min(labelEnd, text.length()); ++i) {
+        output << ' ';
+    }
+    output << "\n";
+    for (auto pair : links) {
+        pair.second.finish->printNode(output, text);
+    }
 }

@@ -29,7 +29,11 @@ class SuffixTreeNode {
 public:
 
     SuffixTreeNode(std::shared_ptr<SuffixTreeNode> parent, size_t labelBegin, size_t labelEnd) :
-            parent(parent), labelBegin(labelBegin), labelEnd(labelEnd) { }
+            parent(parent), labelBegin(labelBegin), labelEnd(labelEnd) {
+        suffixLink = nullptr;
+    }
+
+    void printNode(std::ostream &output, const std::string &text);
 
     // Добавляет переход из вершины в сторону другой вершины node по символу c.
     void addLink(std::shared_ptr<SuffixTreeNode> &node, char c);

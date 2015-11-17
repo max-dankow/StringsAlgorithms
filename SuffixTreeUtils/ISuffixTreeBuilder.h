@@ -5,6 +5,7 @@
 #include <string>
 
 class ISuffixTreeBuilder {
+public:
     virtual SuffixTree buildSuffixTree(const std::string &text) = 0;
 };
 

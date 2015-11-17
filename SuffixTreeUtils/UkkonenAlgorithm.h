@@ -1,13 +1,15 @@
 #ifndef STRINGSEARCHING_UKKONENALGORITHM_H
 #define STRINGSEARCHING_UKKONENALGORITHM_H
 
-#include "ISuffixTreeBuilder.h"
+//#include "ISuffixTreeBuilder.h"
+#include "SuffixTree.h"
 #include <limits>
 
-class UkkonenAlgorithm : public ISuffixTreeBuilder {
+class UkkonenAlgorithm /*: public ISuffixTreeBuilder */{
 public:
-    static const size_t INFINITY = std::numeric_limits::infinity();
-    virtual SuffixTree buildSuffixTree(const std::string &text);
+    static const size_t INFINITY_ = std::numeric_limits<size_t>::infinity();
+
+    SuffixTree buildSuffixTree(const std::string &text);
 
 private:
     Position updateTree(SuffixTree &tree, size_t index, Position activePoint);

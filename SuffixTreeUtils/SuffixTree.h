@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <memory>
+#include <iostream>
 
 class SuffixTree {
 public:
@@ -13,9 +14,12 @@ public:
 
     const std::shared_ptr<SuffixTreeNode> &getRoot() const;
 
+    void printTree(std::ostream &output);
+
 //    Position go(Position from, char letter);
 
     std::string text;
+    std::shared_ptr<SuffixTreeNode> blank;
 private:
 //    bool tryGetNextLetter(Position position, char nextLetter);
     std::shared_ptr<SuffixTreeNode> root;

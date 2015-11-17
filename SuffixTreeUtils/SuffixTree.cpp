@@ -1,16 +1,16 @@
-#include <assert.h>
 #include "SuffixTree.h"
 
 SuffixTree::SuffixTree(std::string text) : text(text) {
     // Создаем фиктивную вершину для унификации операций.
     // Т.к. root.parent будет ссылаться на newBlank, то он не удалится при завершении функции.
-    std::shared_ptr<SuffixTreeNode> newBlank(new SuffixTreeNode(nullptr, 0, 0));
-    root.reset(new SuffixTreeNode(newBlank, 0, 0));
+    blank.reset(new SuffixTreeNode(nullptr, 0, 0));
+    root.reset(new SuffixTreeNode(nullptr, 0, 0));
     // Из фиктивной вершины в root ведут ребра со всеми символами алфавита.
     // todo: сделать более универсальное задание алфавита.
-    for (char c = 'a'; c < 'z'; ++c) {
-        newBlank->addLink(root, c);
+    for (char c = 'a'; c <= 'z'; ++c) {
+        blank->addLink(root, c);
     }
+    root->setSuffixLink(blank);
 }
 
 const std::shared_ptr<SuffixTreeNode> &SuffixTree::getRoot() const {
@@ -41,10 +41,13 @@ const std::shared_ptr<SuffixTreeNode> &SuffixTree::getRoot() const {
 ////    return Position(std::shared_ptr<SuffixTreeNode>(), 0);
 //}
 
-bool SuffixTree::tryGetNextLetter(Position position, char nextLetter) {
-    if (position.distanceToFinish == 0) {
-    }
-    size_t index = position.finish->getLabelEnd() - position.distanceToFinish;
-    assert(index >= 0 && index < text.length());
-    return text[index];
+//bool SuffixTree::tryGetNextLetter(Position position, char nextLetter) {
+//    if (position.distanceToFinish == 0) {
+//    }
+//    size_t index = position.finish->getLabelEnd() - position.distanceToFinish;
+//    assert(index >= 0 && index < text.length());
+//    return text[index];
+//}
+void SuffixTree::printTree(std::ostream &output) {
+    root->printNode(output, text);
 }
