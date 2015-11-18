@@ -127,8 +127,9 @@ TEST(ForceChecked, RandomStringsAB) {
 
 // Тесты для алгоритма поиска числа подстрок.
 
-TEST(AllSubstringsTests, ManualStrings) {
+TEST(AllSubstringsTests, RandomStrings) {
     UkkonenAlgorithm ukkonenAlgorithm;
+
     ukkonenAlgorithm.buildSuffixTree("abacaba");
 }
 

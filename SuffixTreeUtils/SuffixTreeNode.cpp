@@ -90,3 +90,13 @@ long long SuffixTreeNode::countSubstrings() {
 long long int SuffixTreeNode::getEdgeLength() {
     return (long long int) (getLabelEnd() - getLabelBegin());
 }
+
+SuffixTreeNode::~SuffixTreeNode() {
+    for (auto pair : links) {
+        // Рекурсивно удаляем потомков.
+        if (pair.second.finish != nullptr) {
+            delete pair.second.finish;
+        }
+        pair.second.finish = nullptr;
+    }
+}

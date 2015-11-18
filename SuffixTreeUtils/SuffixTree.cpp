@@ -68,3 +68,15 @@ SuffixTreeNode *SuffixTree::testAndSplit(Position position) {
 long long int SuffixTree::countSubstrings() {
     return root->countSubstrings() - 1;
 }
+
+
+SuffixTree::~SuffixTree() {
+    delete root;
+    root = nullptr;
+    // Удаляем blank. Из него идут несколько ребер в одну уже удаленную вершину.
+    blank->links.clear();
+//    for (auto it = blank->links.begin(); it != blank->links.end(); ++it) {
+//        it->second.finish = nullptr;
+//    }
+    delete blank;
+}

@@ -13,8 +13,6 @@ private:
     Position updateTree(SuffixTree &tree, size_t index, Position activePoint);
 
     Position findSuffixLink(SuffixTree &tree, Position position);
-
-
 };
 
 

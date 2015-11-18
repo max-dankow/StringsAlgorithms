@@ -14,6 +14,8 @@ public:
 
     SuffixTree(std::string text);
 
+    virtual ~SuffixTree();
+
     SuffixTreeNode * getRoot() const;
 
     void printTree(std::ostream &output);
