@@ -127,10 +127,38 @@ TEST(ForceChecked, RandomStringsAB) {
 
 // Тесты для алгоритма поиска числа подстрок.
 
-TEST(AllSubstringsTests, RandomStrings) {
-    UkkonenAlgorithm ukkonenAlgorithm;
+long long stupidCountSubstrings(std::string text) {
+    std::set<std::string> set;
+    for (auto begin = 0; begin < text.length(); ++begin) {
+        for (auto end = begin; end < text.length(); ++end) {
+            std::string current(text.begin() + begin, text.begin() + end + 1);
+            if (current.empty()) {
+                continue;
+            }
+            if (set.find(current) == set.end()) {
+                set.insert(current);
+            }
+        }
+    }
+    return (long long int) set.size();
+}
 
-    ukkonenAlgorithm.buildSuffixTree("abacaba");
+TEST(AllSubstringsTests, RandomStringsAZ1000) {
+    UkkonenAlgorithm ukkonenAlgorithm;
+    for (size_t i = 0; i < 25; ++i) {
+        std::string text = generateRandomString(5, 1000, 'a', 'z');
+        SuffixTree suffixTree = ukkonenAlgorithm.buildSuffixTree(text);
+        ASSERT_EQ(stupidCountSubstrings(text), suffixTree.countSubstrings());
+    }
+}
+
+TEST(AllSubstringsTests, RandomStringsAC100) {
+    UkkonenAlgorithm ukkonenAlgorithm;
+    for (size_t i = 0; i < 100; ++i) {
+        std::string text = generateRandomString(0, 100, 'a', 'c');
+        SuffixTree suffixTree = ukkonenAlgorithm.buildSuffixTree(text);
+        ASSERT_EQ(stupidCountSubstrings(text), suffixTree.countSubstrings());
+    }
 }
 
 int main(int argc, char **argv) {
