@@ -7,7 +7,6 @@ SuffixTree UkkonenAlgorithm::buildSuffixTree(const std::string &text) {
     Position activePoint = suffixTree.getRoot()->getPosition();
     for (size_t i = 0; i < text.length(); ++i) {
         activePoint = updateTree(suffixTree, i, activePoint);
-//        suffixTree.printTree(std::cout);
     }
     return suffixTree;
 }
@@ -21,7 +20,7 @@ Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, Position a
     SuffixTreeNode *currentNode = activePoint.finish;// todo: = nullptr.
     // Пока нет ребра но текущему символу, добавляем и переходим по суффиксным ссылкам.
     while (!tree.canGo(activePoint, letter)) {
-        currentNode = tree.testAndSplit(activePoint);
+        currentNode = tree.makeExplicit(activePoint);
         activePoint = currentNode->getPosition();
         // Подвешиваем новую вершину-букву.
         SuffixTreeNode *newChild = new SuffixTreeNode(currentNode, index, tree.text.length());
@@ -29,7 +28,7 @@ Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, Position a
         assert(currentNode->canGo(letter));
         // Проходим по неявной суффиксной ссылке.
         activePoint = findSuffixLink(tree, activePoint);
-        SuffixTreeNode *explicitSuffixLink = tree.testAndSplit(activePoint);
+        SuffixTreeNode *explicitSuffixLink = tree.makeExplicit(activePoint);
         activePoint = explicitSuffixLink->getPosition();
         // Устанавливаем найденую суффиксную ссылку.
         if (currentNode->getSuffixLink() == nullptr) {

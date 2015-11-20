@@ -1,9 +1,11 @@
 #include <assert.h>
 #include "SuffixTree.h"
+#include <vector>
+#include <memory>
+#include <limits>
 
 SuffixTree::SuffixTree(std::string text) : text(text) {
     // Создаем фиктивную вершину для унификации операций.
-    // Т.к. root.parent будет ссылаться на newBlank, то он не удалится при завершении функции.
     blank = new SuffixTreeNode(nullptr, 0, 0);
     root = new SuffixTreeNode(nullptr, std::numeric_limits<size_t>::max(), 0);
     // Из фиктивной вершины в root ведут ребра со всеми символами алфавита.
@@ -14,39 +16,39 @@ SuffixTree::SuffixTree(std::string text) : text(text) {
     root->setSuffixLink(blank);
 }
 
-SuffixTreeNode * SuffixTree::getRoot() const {
+SuffixTreeNode *SuffixTree::getRoot() const {
     return root;
 }
 
-bool SuffixTree::canGo(Position from, char letter) {
-    if (from.isExplicit()) {
-        return from.finish->canGo(letter);
+bool SuffixTree::canGo(const Position &position, char letter) {
+    if (position.isExplicit()) {
+        return position.finish->canGo(letter);
     } else {
-        size_t nextLetterIndex = from.finish->getLabelEnd() - from.distanceToFinish;
+        size_t nextLetterIndex = position.finish->getLabelEnd() - position.distanceToFinish;
         assert(nextLetterIndex < text.length());
         return text[nextLetterIndex] == letter;
     }
 }
 
-Position SuffixTree::go(Position from, char letter) {
-    if (from.isExplicit()) {
-        return from.finish->go(letter);
+Position SuffixTree::go(const Position &position, char letter) {
+    if (position.isExplicit()) {
+        return position.finish->go(letter);
     } else {
-        if (canGo(from, letter)) {
-            return Position(from.finish, from.distanceToFinish - 1);
+        if (canGo(position, letter)) {
+            return Position(position.finish, position.distanceToFinish - 1);
         } else {
             throw std::logic_error("Wrong letter.");
         }
     }
 }
 
-void SuffixTree::printTree(std::ostream &output) {
+void SuffixTree::printTree(std::ostream &output) const {
     output << '.';
     root->printNode(output, text, 0);
     output << "-------------------------\n";
 }
 
-SuffixTreeNode *SuffixTree::testAndSplit(Position position) {
+SuffixTreeNode *SuffixTree::makeExplicit(Position position) {
     SuffixTreeNode *finishNode = position.finish;
     if (position.isExplicit()) {
         return finishNode;
@@ -69,14 +71,10 @@ long long int SuffixTree::countSubstrings() {
     return root->countSubstrings() - 1;
 }
 
-
 SuffixTree::~SuffixTree() {
     delete root;
-    root = nullptr;
-    // Удаляем blank. Из него идут несколько ребер в одну уже удаленную вершину.
+    // Из blank идут несколько ребер в одну уже удаленную вершину.
+    // Очищаем список его детей, что бы не удалять их.
     blank->links.clear();
-//    for (auto it = blank->links.begin(); it != blank->links.end(); ++it) {
-//        it->second.finish = nullptr;
-//    }
     delete blank;
 }

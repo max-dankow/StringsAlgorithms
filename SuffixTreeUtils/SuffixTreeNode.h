@@ -2,11 +2,9 @@
 #define STRINGSEARCHING_SUFFIXTREENODE_H
 
 #include "SuffixTree.h"
-#include <vector>
-#include <map>
 #include <stdlib.h>
-#include <memory>
-#include <stdexcept>
+#include <iostream>
+#include <map>
 
 class SuffixTreeNode;
 
@@ -18,9 +16,12 @@ struct Position {
     Position(SuffixTreeNode *finish, size_t distance) :
             finish(finish), distanceToFinish(distance) { }
 
-    bool isExplicit();
+    // Проверяет, является ли соответствующая вершина явной.
+    bool isExplicit() const;
 
+    // Указывает на явную вершину, в которой закачивается ребро, на котором мы находимся.
     SuffixTreeNode *finish;
+    // Длинна строки оставшейся до конца ребра, начиная с текущего положения.
     size_t distanceToFinish;
 };
 
@@ -35,10 +36,11 @@ public:
 
     virtual ~SuffixTreeNode();
 
+    // Печатает подстроку, соответствующую ребру из родителя.
     void printNode(std::ostream &output, const std::string &text, size_t offset);
 
-    // Добавляет переход из вершины в сторону другой вершины node по символу c.
-    void addLink(SuffixTreeNode *node, char c);
+    // Добавляет переход из вершины в сторону другой вершины node по заданому символу.
+    void addLink(SuffixTreeNode *node, char letter);
 
     // Индекс первого символа метки ребра, ведущего из предка.
     size_t getLabelBegin() const;
@@ -50,9 +52,19 @@ public:
 
     void setLabelEnd(size_t labelEnd);
 
+    // Проверяем, существует ли ребро из данной вершины по заданной букве.
     bool canGo(char letter);
 
+    // Если возможно, возвращает позицию в дереве,
+    // соответствующую переходу из данной вершины по заданой букве.
     Position go(char letter);
+
+    // Возвращает позицию в дереве, соответствующую данной явной вершине.
+    Position getPosition();
+
+    long long int getEdgeLength();
+
+    long long int countSubstrings();
 
     // Указатель на предка.
     SuffixTreeNode * getParent() const;
@@ -62,12 +74,6 @@ public:
     SuffixTreeNode * getSuffixLink() const;
 
     void setSuffixLink(SuffixTreeNode *suffixLink);
-
-    Position getPosition();
-
-    long long int getEdgeLength();
-
-    long long int countSubstrings();
 
     std::map<char, Position> links;
 

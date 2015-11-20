@@ -2,40 +2,39 @@
 #define STRINGSEARCHING_SUFFIXTREE_H
 
 #include "SuffixTreeNode.h"
-#include <string>
-#include <vector>
-#include <memory>
-#include <iostream>
-#include <limits>
-#include <stdexcept>
 
+// Представляет сжатое суффиксное дерево.
 class SuffixTree {
 public:
 
-    SuffixTree(std::string text);
+    explicit SuffixTree(std::string text);
 
     virtual ~SuffixTree();
 
-    SuffixTreeNode * getRoot() const;
+    SuffixTreeNode *getRoot() const;
 
-    void printTree(std::ostream &output);
+    // Печатает дерево в выходной поток output.
+    void printTree(std::ostream &output) const;
 
-    bool canGo(Position from, char letter);
+    // Проверяет возможен ли в дереве переход из позиции по заданой букве.
+    bool canGo(const Position &position, char letter);
 
-    Position go(Position from, char letter);
+    // Если возможно, возвращает позицию в дереве,
+    // соответствующую переходу из заданой позиции по заданой букве.
+    Position go(const Position &position, char letter);
 
+    // Делает вершину, соотвестующую позиции, явной.
+    // Если она была неявная, то разрезает ребро и создает новую явную вершину.
+    // Иначе просто возвращает эту явную вершину.
+    SuffixTreeNode *makeExplicit(Position position);
 
-    std::string text;
-    SuffixTreeNode *blank;
-
-    SuffixTreeNode *testAndSplit(Position position);
-
+    // Считает количество различных подстрок в дереве.
     long long int countSubstrings();
 
+    std::string text;
 private:
-//    bool tryGetNextLetter(Position position, char nextLetter);
     SuffixTreeNode *root;
-
+    SuffixTreeNode *blank;
 };
 
 #endif //STRINGSEARCHING_SUFFIXTREE_H

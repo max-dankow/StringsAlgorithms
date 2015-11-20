@@ -2,6 +2,7 @@
 #include "../StringUtils.h"
 #include "../SuffixTreeUtils/SuffixTree.h"
 #include "../SuffixTreeUtils/UkkonenAlgorithm.h"
+#include <chrono>
 
 bool isPalindrome(const std::string &text) {
     auto begin = text.begin();
@@ -159,6 +160,18 @@ TEST(AllSubstringsTests, RandomStringsAC100) {
         SuffixTree suffixTree = ukkonenAlgorithm.buildSuffixTree(text);
         ASSERT_EQ(stupidCountSubstrings(text), suffixTree.countSubstrings());
     }
+}
+
+
+TEST(DurationUkkonen, Duration) {
+    std::string text = generateRandomString(500000, 500000, 'a', 'c');
+    auto startTime = std::chrono::steady_clock::now();
+    UkkonenAlgorithm algorithm;
+    SuffixTree tree = algorithm.buildSuffixTree(text);
+    auto endTime = std::chrono::steady_clock::now();
+    std::chrono::milliseconds workTime = std::chrono::milliseconds(
+            std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime));
+    std::cerr << "Running time " << workTime.count() << "ms.\n";
 }
 
 int main(int argc, char **argv) {

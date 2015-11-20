@@ -1,8 +1,11 @@
 #include "SuffixTree.h"
+#include <vector>
+#include <limits>
 
-void SuffixTreeNode::addLink(SuffixTreeNode *node, char c) {
+
+void SuffixTreeNode::addLink(SuffixTreeNode *node, char letter) {
     size_t distance = node->getLabelEnd() - node->getLabelBegin();
-    links.insert(std::make_pair(c, Position(node, distance - 1)));
+    links.insert(std::make_pair(letter, Position(node, distance - 1)));
 }
 
 void SuffixTreeNode::setLabelBegin(size_t labelBegin) {
@@ -21,7 +24,7 @@ size_t SuffixTreeNode::getLabelEnd() const {
     return labelEnd;
 }
 
-SuffixTreeNode * SuffixTreeNode::getParent() const {
+SuffixTreeNode *SuffixTreeNode::getParent() const {
     return parent;
 }
 
@@ -40,7 +43,7 @@ void SuffixTreeNode::setSuffixLink(SuffixTreeNode *suffixLink) {
     SuffixTreeNode::suffixLink = suffixLink;
 }
 
-SuffixTreeNode * SuffixTreeNode::getSuffixLink() const {
+SuffixTreeNode *SuffixTreeNode::getSuffixLink() const {
     return suffixLink;
 }
 
@@ -62,7 +65,7 @@ Position::Position() {
     distanceToFinish = 0;
 }
 
-bool Position::isExplicit() {
+bool Position::isExplicit() const {
     return distanceToFinish == 0;
 }
 
@@ -97,6 +100,5 @@ SuffixTreeNode::~SuffixTreeNode() {
         if (pair.second.finish != nullptr) {
             delete pair.second.finish;
         }
-        pair.second.finish = nullptr;
     }
 }
