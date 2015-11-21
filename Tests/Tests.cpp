@@ -164,15 +164,22 @@ TEST(AllSubstringsTests, RandomStringsAC100) {
 
 
 TEST(DurationUkkonen, Duration) {
-    std::string text = generateRandomString(500000, 500000, 'a', 'c');
-    auto startTime = std::chrono::steady_clock::now();
-    UkkonenAlgorithm algorithm;
-    SuffixTree tree = algorithm.buildSuffixTree(text);
-    auto endTime = std::chrono::steady_clock::now();
-    std::chrono::milliseconds workTime = std::chrono::milliseconds(
-            std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime));
-    std::cerr << "Running time " << workTime.count() << "ms.\n";
+    const int TEST_NUMBER = 10;
+    std::chrono::milliseconds averageTime(0);
+    for (int i = 0; i < TEST_NUMBER; ++i) {
+        std::string text = generateRandomString(100000, 100000, 'a', 'z');
+        auto startTime = std::chrono::steady_clock::now();
+        UkkonenAlgorithm algorithm;
+        SuffixTree tree = algorithm.buildSuffixTree(text);
+        auto endTime = std::chrono::steady_clock::now();
+        std::chrono::milliseconds workTime = std::chrono::milliseconds(
+                std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime));
+        averageTime += workTime;
+//        std::cerr << "Running time " << workTime.count() << "ms.\n";
+    }
+    std::cerr << "Average time " << averageTime.count() / TEST_NUMBER << "ms.\n";
 }
+
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);

@@ -9,6 +9,7 @@ add_executable(Solution main.cpp)
 
 add_library(StringUtils StringUtils.cpp StringUtils.h)
 add_subdirectory(SuffixTreeUtils)
+add_subdirectory(SuffixArray)
 
-target_link_libraries(Tests gtest StringUtils SuffixTreeUtils)
-target_link_libraries(Solution StringUtils SuffixTreeUtils)
+target_link_libraries(Tests gtest StringUtils SuffixTreeUtils SuffixArray)
+target_link_libraries(Solution StringUtils SuffixTreeUtils SuffixArray)
