@@ -180,12 +180,65 @@ TEST(DurationUkkonen, Duration) {
     std::cerr << "Average time " << averageTime.count() / TEST_NUMBER << "ms.\n";
 }
 
-// Тесты для суффисного автомата.
+// Тесты для суффисного массива.
+struct Suffix {
+    Suffix() { }
+
+    Suffix(std::string text, size_t index) : text(text), index(index) { }
+
+    std::string text;
+    size_t index;
+//    bool operator<(const Suffix &other) {
+//        return this->text < other.text;
+//    }
+};
+
+bool operator<(const Suffix &a, const Suffix &b) {
+    return a.text < b.text;
+}
+
+
+std::vector<size_t> stupidSuffixArray(const std::string text) {
+    std::vector<Suffix> suf;
+    for (size_t i = 0; i < text.length(); ++i) {
+        suf.emplace_back(std::string(text.begin() + i, text.end()), i);
+    }
+    std::sort(suf.begin(), suf.end());
+    std::vector<size_t> answer;
+    for (Suffix s : suf) {
+        answer.push_back(s.index);
+    }
+    return answer;
+}
 
 TEST(SuffixArrayTests, ManualTexts) {
     InducedSorting algorithm;
-    std::string text = "mmiissiissiippii";
-    algorithm.buildSuffixArray(text);
+    std::string text = "immissiissippi";
+    std::vector<size_t> suffixArray = {13, 6, 0, 10, 3, 7, 2, 1, 12, 11, 5, 9, 4, 8};
+    ASSERT_EQ(suffixArray, algorithm.buildSuffixArray(text));
+    ASSERT_EQ(stupidSuffixArray("caacabccba"), algorithm.buildSuffixArray("caacabccba"));
+}
+
+bool isSuffixArrayEqual(std::vector<size_t> expected, std::vector<size_t> actual) {
+    if (expected.size() != actual.size()) {
+        return false;
+    }
+    for (size_t i = 0; i < expected.size(); ++i) {
+        if (expected[i] != actual[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+TEST(SuffixArrayTests, RandomTexts) {
+    InducedSorting algorithm;
+    for (size_t i = 0; i < 100; ++i) {
+        std::string text = generateRandomString(3, 1000, 'a', 'z');
+        std::cerr << text << '\n';
+        std::vector<size_t> suffixArray = stupidSuffixArray(text);
+        ASSERT_EQ(suffixArray, algorithm.buildSuffixArray(text));
+    }
 }
 
 int main(int argc, char **argv) {

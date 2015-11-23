@@ -8,7 +8,7 @@
 int main()
 {
     InducedSorting algorithm;
-    std::string text = "immissiissippi";
+    std::string text = "caacabccba";
     algorithm.buildSuffixArray(text);
 //    std::ios_base::sync_with_stdio(false);
 //    long keyLength;

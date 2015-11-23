@@ -1,11 +1,14 @@
 #include "InducedSorting.h"
 #include <limits>
+#include <assert.h>
 
 static const unsigned char CHAR_MAX = std::numeric_limits<unsigned char>::max();
 static const unsigned char CHAR_MIN = std::numeric_limits<unsigned char>::min();
 
 std::vector<size_t> InducedSorting::buildSuffixArray(const std::string text) {
-    return SuffixArrayInducedSorting(text + "$");
+    std::vector<size_t> suffarray = SuffixArrayInducedSorting(text + "$");
+    suffarray.erase(suffarray.begin());
+    return suffarray;
 }
 
 std::vector<size_t> InducedSorting::SuffixArrayInducedSorting(const std::string &text) {
@@ -18,19 +21,19 @@ std::vector<size_t> InducedSorting::SuffixArrayInducedSorting(const std::string 
     std::vector<LMS> sortedLMS = sortLMS(LMSIndices, text, types);
     std::string names;
     bool allUnique = getNames(sortedLMS, text, types, names);
-    std::cerr << names << '\n';
+//    std::cerr << names << '\n';
     std::string trueNames(names.length(), 0);
     for (size_t i = 0; i < sortedLMS.size(); ++i) {
         trueNames[sortedLMS[i].index] = names[i];
     }
-    std::cerr << trueNames << '\n';
+//    std::cerr << trueNames << '\n';
     std::vector<size_t> reducedSa;
     // Если в сжатой строке все символы различны:
     if (allUnique) {
         // то напрямую посчитать суффиксный массив для нее.
         reducedSa.resize(trueNames.length() + 1);
-        for (size_t i = 1; i < names.length(); ++i) {
-            reducedSa[sortedLMS[i].index + 1] = i;
+        for (size_t i = 0; i < names.length(); ++i) {
+            reducedSa[i + 1] = sortedLMS[i].index;
         }
     } else {
         // иначе, рекурсивное построение суффиксного массива для сжатой строки.
@@ -105,7 +108,7 @@ std::vector<size_t> InducedSorting::induceSuffixArray(const std::string &text,
     std::vector<ssize_t> sa(text.size(), -1);
     // Находим разбиение на корзины.
     std::vector<Bucket> buckets = separateIntoBuckets(text, types);
-    printBuckets(buckets, sa, std::cerr);
+//    printBuckets(buckets, sa, std::cerr);
     for (auto it = buckets.begin(); it != buckets.end(); ++it) {
         it->position = it->sBegin;
     }
@@ -114,7 +117,7 @@ std::vector<size_t> InducedSorting::induceSuffixArray(const std::string &text,
         char letter = text[LMSIndices[i].begin];
         sa[buckets[letter].position] = LMSIndices[i].begin;
         ++buckets[letter].position;
-        printBuckets(buckets, sa, std::cerr);
+//        printBuckets(buckets, sa, std::cerr);
     }
     // Шаг 2. Разместим все L-type LMS-префиксы.
     for (auto it = buckets.begin(); it != buckets.end(); ++it) {
@@ -128,7 +131,7 @@ std::vector<size_t> InducedSorting::induceSuffixArray(const std::string &text,
                 ++buckets[letter].position;
             }
         }
-        printBuckets(buckets, sa, std::cerr);
+//        printBuckets(buckets, sa, std::cerr);
     }
     // Шаг 3. Обратный проход.
     for (auto it = buckets.begin(); it != buckets.end(); ++it) {
@@ -142,9 +145,9 @@ std::vector<size_t> InducedSorting::induceSuffixArray(const std::string &text,
                 --buckets[letter].position;
             }
         }
-        printBuckets(buckets, sa, std::cerr);
+//        printBuckets(buckets, sa, std::cerr);
     }
-    printBuckets(buckets, sa, std::cerr);
+//    printBuckets(buckets, sa, std::cerr);
 
     std::vector<size_t> answer(sa.size());
     for (size_t i = 0; i < sa.size(); ++i) {
@@ -181,7 +184,7 @@ std::vector<InducedSorting::LMS> InducedSorting::sortLMS(const std::vector<Induc
     }
     // Находим разбиение на корзины.
     std::vector<Bucket> buckets = separateIntoBuckets(text, types);
-    printBuckets(buckets, sa, std::cerr);
+//    printBuckets(buckets, sa, std::cerr);
     for (auto it = buckets.begin(); it != buckets.end(); ++it) {
         it->position = it->end - 1;
     }
@@ -191,7 +194,7 @@ std::vector<InducedSorting::LMS> InducedSorting::sortLMS(const std::vector<Induc
         sa[buckets[letter].position] = LMSIndices[i].begin;
         lmsSorted[buckets[letter].position] = LMSIndices[i];
         --buckets[letter].position;
-        printBuckets(buckets, sa, std::cerr);
+//        printBuckets(buckets, sa, std::cerr);
     }
     // Шаг 2. Разместим все L-type LMS-префиксы.
     for (auto it = buckets.begin(); it != buckets.end(); ++it) {
@@ -206,7 +209,7 @@ std::vector<InducedSorting::LMS> InducedSorting::sortLMS(const std::vector<Induc
                 ++buckets[letter].position;
             }
         }
-        printBuckets(buckets, sa, std::cerr);
+//        printBuckets(buckets, sa, std::cerr);
     }
     // Шаг 3. Обратный проход.
     for (auto it = buckets.begin(); it != buckets.end(); ++it) {
@@ -221,9 +224,9 @@ std::vector<InducedSorting::LMS> InducedSorting::sortLMS(const std::vector<Induc
                 --buckets[letter].position;
             }
         }
-        printBuckets(buckets, sa, std::cerr);
+//        printBuckets(buckets, sa, std::cerr);
     }
-    printBuckets(buckets, sa, std::cerr);
+//    printBuckets(buckets, sa, std::cerr);
 
     std::vector<LMS> answer;
     for (size_t i = 0; i < lmsSorted.size(); ++i) {
@@ -257,10 +260,11 @@ bool isLMSEqual(const InducedSorting::LMS &left,
 
 bool InducedSorting::getNames(const std::vector<InducedSorting::LMS> &lmsSorted, const std::string &text,
                               const std::vector<InducedSorting::Types> &types, std::string &names) {
-    unsigned char name = 'a';
+    unsigned char name = 1;
     names.assign(lmsSorted.size(), 0);
     bool allUnique = true;
     for (size_t i = 0; i < lmsSorted.size(); ++i) {
+        assert(name <= 254);
         if (i != 0) {
             if (!isLMSEqual(lmsSorted[i], lmsSorted[i - 1], text, types)) {
                 name++;
