@@ -252,7 +252,7 @@ bool isLMSEqual(const InducedSorting::LMS &left,
 
 bool InducedSorting::getNames(const std::vector<InducedSorting::LMS> &lmsSorted, const std::vector<long long> &text,
                               const std::vector<InducedSorting::Types> &types, std::vector<long long> &names) {
-    unsigned char name = 1;
+    long long name = 1;
     names.assign(lmsSorted.size(), 0);
     bool allUnique = true;
     for (size_t i = 0; i < lmsSorted.size(); ++i) {

@@ -217,6 +217,11 @@ TEST(SuffixArrayTests, ManualTexts) {
     std::vector<size_t> suffixArray = {13, 6, 0, 10, 3, 7, 2, 1, 12, 11, 5, 9, 4, 8};
     ASSERT_EQ(suffixArray, algorithm.buildSuffixArray(text));
     ASSERT_EQ(stupidSuffixArray("caacabccba"), algorithm.buildSuffixArray("caacabccba"));
+    ASSERT_EQ(stupidSuffixArray(
+            "yngjoqdizwqbavpazpgdralvbjgkjngehyjpyldplbjumixyvdkmdgkhsiwgigafwfricwyggqqsjqwjugcjbnnmsfietnatduewdipleuzxlvhqkjjnratgftmenoecpwwcxbmdcxejjungyacbggyfdbwkpfldyikmmpadepatppzwfipztjgmnjwpbmtajgdxxcahpblpdxkmkqakbuczcjpvjbdeofkfimrmbkrfoubjrubbwvsvmmehucjutrcfpgofpfamtfxspcftxzsaizpsieaznavwcvcvyppcwbubafihcuubhgjiijsvjniujyazuyxqwuuawtavsaducrmegvctmsavyorhhinvqrqcqfxbzxulzqlzzogizllomcnahdjluoukcrltshxcwsfnrzwvmcewiexefzevjudvbrdvllhypwyhhanochwvztxdalehsqtsbycpskvjgwxqfpiiidgtkegtdfbetqhcqohtxswlyiahhiyxgczcirtlharewwfohxexddmznbumhxxeyyxsukrdbwuptptmobpypsbrlamdbiiwhvwoywaycxgtgdrrvhlzgyjodqwwquawkwpjuullxfxccjyejppauauqdjrzflhbaadzjjljtbiuxlpyaenguafmlppxrlmzrehoreepusitqazmqhmnlirrecyjelxklnfpjhmklryvetqcfujddxnqhgkmiopscejmqwjzwyolukxhowoorijuvhunipksigpgwunbbthjxrmgniaptdljszjrxphsrxfeodehexfsixbtlqroyttauubmeulkzlfjjfhbpoqejdvhruzphrtdsrheyxttmvybwydmkczstwtrqpgsvhrjzzqyk"),
+              algorithm.buildSuffixArray(
+                      "yngjoqdizwqbavpazpgdralvbjgkjngehyjpyldplbjumixyvdkmdgkhsiwgigafwfricwyggqqsjqwjugcjbnnmsfietnatduewdipleuzxlvhqkjjnratgftmenoecpwwcxbmdcxejjungyacbggyfdbwkpfldyikmmpadepatppzwfipztjgmnjwpbmtajgdxxcahpblpdxkmkqakbuczcjpvjbdeofkfimrmbkrfoubjrubbwvsvmmehucjutrcfpgofpfamtfxspcftxzsaizpsieaznavwcvcvyppcwbubafihcuubhgjiijsvjniujyazuyxqwuuawtavsaducrmegvctmsavyorhhinvqrqcqfxbzxulzqlzzogizllomcnahdjluoukcrltshxcwsfnrzwvmcewiexefzevjudvbrdvllhypwyhhanochwvztxdalehsqtsbycpskvjgwxqfpiiidgtkegtdfbetqhcqohtxswlyiahhiyxgczcirtlharewwfohxexddmznbumhxxeyyxsukrdbwuptptmobpypsbrlamdbiiwhvwoywaycxgtgdrrvhlzgyjodqwwquawkwpjuullxfxccjyejppauauqdjrzflhbaadzjjljtbiuxlpyaenguafmlppxrlmzrehoreepusitqazmqhmnlirrecyjelxklnfpjhmklryvetqcfujddxnqhgkmiopscejmqwjzwyolukxhowoorijuvhunipksigpgwunbbthjxrmgniaptdljszjrxphsrxfeodehexfsixbtlqroyttauubmeulkzlfjjfhbpoqejdvhruzphrtdsrheyxttmvybwydmkczstwtrqpgsvhrjzzqyk"));
+
 }
 
 long long isSuffixArrayEqual(std::vector<size_t> expected, std::vector<size_t> actual) {
@@ -234,8 +239,7 @@ long long isSuffixArrayEqual(std::vector<size_t> expected, std::vector<size_t> a
 TEST(SuffixArrayTests, RandomTexts) {
     InducedSorting algorithm;
     for (size_t i = 0; i < 1000; ++i) {
-        std::string text = /*"yngjoqdizwqbavpazpgdralvbjgkjngehyjpyldplbjumixyvdkmdgkhsiwgigafwfricwyggqqsjqwjugcjbnnmsfietnatduewdipleuzxlvhqkjjnratgftmenoecpwwcxbmdcxejjungyacbggyfdbwkpfldyikmmpadepatppzwfipztjgmnjwpbmtajgdxxcahpblpdxkmkqakbuczcjpvjbdeofkfimrmbkrfoubjrubbwvsvmmehucjutrcfpgofpfamtfxspcftxzsaizpsieaznavwcvcvyppcwbubafihcuubhgjiijsvjniujyazuyxqwuuawtavsaducrmegvctmsavyorhhinvqrqcqfxbzxulzqlzzogizllomcnahdjluoukcrltshxcwsfnrzwvmcewiexefzevjudvbrdvllhypwyhhanochwvztxdalehsqtsbycpskvjgwxqfpiiidgtkegtdfbetqhcqohtxswlyiahhiyxgczcirtlharewwfohxexddmznbumhxxeyyxsukrdbwuptptmobpypsbrlamdbiiwhvwoywaycxgtgdrrvhlzgyjodqwwquawkwpjuullxfxccjyejppauauqdjrzflhbaadzjjljtbiuxlpyaenguafmlppxrlmzrehoreepusitqazmqhmnlirrecyjelxklnfpjhmklryvetqcfujddxnqhgkmiopscejmqwjzwyolukxhowoorijuvhunipksigpgwunbbthjxrmgniaptdljszjrxphsrxfeodehexfsixbtlqroyttauubmeulkzlfjjfhbpoqejdvhruzphrtdsrheyxttmvybwydmkczstwtrqpgsvhrjzzqyk";//*/generateRandomString(
-                700, 805, 'a', 'z');
+        std::string text = generateRandomString(1, 10000, 'a', 'z');
 //        std::cerr << text << "\n\n";
         std::vector<size_t> suffixArray = stupidSuffixArray(text);
         std::vector<size_t> suffixArray2 = algorithm.buildSuffixArray(text);
