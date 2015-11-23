@@ -1,12 +1,9 @@
 #include "InducedSorting.h"
 #include <limits>
 
-static const unsigned char CHAR_MAX = std::numeric_limits<unsigned char>::max();
-static const unsigned char CHAR_MIN = std::numeric_limits<unsigned char>::min();
-
 std::vector<size_t> InducedSorting::buildSuffixArray(const std::string text) {
     std::vector<long long> llText = convertToLongVector(text);
-    llText.push_back(0);// аналог $
+    llText.push_back(0);
     std::vector<size_t> suffarray = SuffixArrayInducedSorting(llText);
     suffarray.erase(suffarray.begin());
     return suffarray;
