@@ -8,9 +8,15 @@
 int main()
 {
     InducedSorting algorithm;
-    std::string text = "yngjoqdizwqbavpazpgdralvbjgkjngehyjpyldplbjumixyvdkmdgkhsiwgigafwfricwyggqqsjqwjugcjbnnmsfietnatduewdipleuzxlvhqkjjnratgftmenoecpwwcxbmdcxejjungyacbggyfdbwkpfldyikmmpadepatppzwfipztjgmnjwpbmtajgdxxcahpblpdxkmkqakbuczcjpvjbdeofkfimrmbkrfoubjrubbwvsvmmehucjutrcfpgofpfamtfxspcftxzsaizpsieaznavwcvcvyppcwbubafihcuubhgjiijsvjniujyazuyxqwuuawtavsaducrmegvctmsavyorhhinvqrqcqfxbzxulzqlzzogizllomcnahdjluoukcrltshxcwsfnrzwvmcewiexefzevjudvbrdvllhypwyhhanochwvztxdalehsqtsbycpskvjgwxqfpiiidgtkegtdfbetqhcqohtxswlyiahhiyxgczcirtlharewwfohxexddmznbumhxxeyyxsukrdbwuptptmobpypsbrlamdbiiwhvwoywaycxgtgdrrvhlzgyjodqwwquawkwpjuullxfxccjyejppauauqdjrzflhbaadzjjljtbiuxlpyaenguafmlppxrlmzrehoreepusitqazmqhmnlirrecyjelxklnfpjhmklryvetqcfujddxnqhgkmiopscejmqwjzwyolukxhowoorijuvhunipksigpgwunbbthjxrmgniaptdljszjrxphsrxfeodehexfsixbtlqroyttauubmeulkzlfjjfhbpoqejdvhruzphrtdsrheyxttmvybwydmkczstwtrqpgsvhrjzzqyk";
-    algorithm.buildSuffixArray(text);
-//    std::ios_base::sync_with_stdio(false);
+    std::ios_base::sync_with_stdio(false);
+    std::string text;
+    std::cin >> text;
+    std::vector<size_t> suffixArray = algorithm.buildSuffixArray(text);
+    for (size_t i : suffixArray) {
+        std::cout << i << '\n';
+    }
+//    std::cout << '\n';
+
 //    long keyLength;
 //    std::string text;
 //    std::cin >> keyLength;
