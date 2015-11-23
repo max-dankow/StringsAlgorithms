@@ -4,17 +4,17 @@
 #include <algorithm>
 #include "SuffixTreeUtils/UkkonenAlgorithm.h"
 #include "SuffixArray/InducedSorting.h"
+#include "SuffixArray/SuffixArrayUtils.h"
 
 int main()
 {
     InducedSorting algorithm;
     std::ios_base::sync_with_stdio(false);
     std::string text;
-    std::cin >> text;
-    std::vector<size_t> suffixArray = algorithm.buildSuffixArray(text);
-    for (size_t i : suffixArray) {
-        std::cout << i << '\n';
-    }
+//    std::cin >> text;
+    text = "aba";
+    SuffixArrayUtils utils;
+    std::cout << utils.countSubstrings(text) << "\n";
 //    std::cout << '\n';
 
 //    long keyLength;

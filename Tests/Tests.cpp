@@ -3,7 +3,9 @@
 #include "../SuffixTreeUtils/SuffixTree.h"
 #include "../SuffixTreeUtils/UkkonenAlgorithm.h"
 #include "../SuffixArray/InducedSorting.h"
+#include "../SuffixArray/SuffixArrayUtils.h"
 #include <chrono>
+
 
 bool isPalindrome(const std::string &text) {
     auto begin = text.begin();
@@ -251,6 +253,42 @@ TEST(SuffixArrayTests, RandomTexts) {
 //        std::cerr << '\n';
 //        std::cerr<< isSuffixArrayEqual(suffixArray, suffixArray2) << "\n\n";
         ASSERT_EQ(suffixArray, suffixArray2);
+    }
+}
+
+
+//TEST(SuffixArrayTests, AllSubstrings) {
+//    SuffixArrayUtils utils;
+//    ASSERT_EQ()
+//}
+// Взаимные тесты суффиксного дерева и массива.
+TEST(CollaborateAllSub, RandomStringsAC100) {
+    UkkonenAlgorithm ukkonenAlgorithm;
+    for (size_t i = 0; i < 1000; ++i) {
+        std::string text = generateRandomString(0, 100, 'a', 'c');
+        SuffixTree suffixTree = ukkonenAlgorithm.buildSuffixTree(text);
+        SuffixArrayUtils utils;
+        ASSERT_EQ(suffixTree.countSubstrings(), utils.countSubstrings(text));
+    }
+}
+
+TEST(CollaborateAllSub, RandomStringsAC10000) {
+    UkkonenAlgorithm ukkonenAlgorithm;
+    for (size_t i = 0; i < 100; ++i) {
+        std::string text = generateRandomString(0, 10000, 'a', 'c');
+        SuffixTree suffixTree = ukkonenAlgorithm.buildSuffixTree(text);
+        SuffixArrayUtils utils;
+        ASSERT_EQ(suffixTree.countSubstrings(), utils.countSubstrings(text));
+    }
+}
+
+TEST(CollaborateAllSub, RandomStringsAZ10000) {
+    UkkonenAlgorithm ukkonenAlgorithm;
+    for (size_t i = 0; i < 100; ++i) {
+        std::string text = generateRandomString(0, 10000, 'a', 'z');
+        SuffixTree suffixTree = ukkonenAlgorithm.buildSuffixTree(text);
+        SuffixArrayUtils utils;
+        ASSERT_EQ(suffixTree.countSubstrings(), utils.countSubstrings(text));
     }
 }
 
