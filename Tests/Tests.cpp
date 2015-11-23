@@ -2,6 +2,7 @@
 #include "../StringUtils.h"
 #include "../SuffixTreeUtils/SuffixTree.h"
 #include "../SuffixTreeUtils/UkkonenAlgorithm.h"
+#include "../SuffixArray/InducedSorting.h"
 #include <chrono>
 
 bool isPalindrome(const std::string &text) {
@@ -162,7 +163,6 @@ TEST(AllSubstringsTests, RandomStringsAC100) {
     }
 }
 
-
 TEST(DurationUkkonen, Duration) {
     const int TEST_NUMBER = 10;
     std::chrono::milliseconds averageTime(0);
@@ -180,6 +180,13 @@ TEST(DurationUkkonen, Duration) {
     std::cerr << "Average time " << averageTime.count() / TEST_NUMBER << "ms.\n";
 }
 
+// Тесты для суффисного автомата.
+
+TEST(SuffixArrayTests, ManualTexts) {
+    InducedSorting algorithm;
+    std::string text = "mmiissiissiippii";
+    algorithm.buildSuffixArray(text);
+}
 
 int main(int argc, char **argv) {
     testing::InitGoogleTest(&argc, argv);
