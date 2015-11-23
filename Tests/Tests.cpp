@@ -219,25 +219,34 @@ TEST(SuffixArrayTests, ManualTexts) {
     ASSERT_EQ(stupidSuffixArray("caacabccba"), algorithm.buildSuffixArray("caacabccba"));
 }
 
-bool isSuffixArrayEqual(std::vector<size_t> expected, std::vector<size_t> actual) {
+long long isSuffixArrayEqual(std::vector<size_t> expected, std::vector<size_t> actual) {
     if (expected.size() != actual.size()) {
-        return false;
+        return 0;
     }
     for (size_t i = 0; i < expected.size(); ++i) {
         if (expected[i] != actual[i]) {
-            return false;
+            return i;
         }
     }
-    return true;
+    return -1;
 }
 
 TEST(SuffixArrayTests, RandomTexts) {
     InducedSorting algorithm;
-    for (size_t i = 0; i < 100; ++i) {
-        std::string text = generateRandomString(3, 1000, 'a', 'z');
-        std::cerr << text << '\n';
+    for (size_t i = 0; i < 1000; ++i) {
+        std::string text = /*"yngjoqdizwqbavpazpgdralvbjgkjngehyjpyldplbjumixyvdkmdgkhsiwgigafwfricwyggqqsjqwjugcjbnnmsfietnatduewdipleuzxlvhqkjjnratgftmenoecpwwcxbmdcxejjungyacbggyfdbwkpfldyikmmpadepatppzwfipztjgmnjwpbmtajgdxxcahpblpdxkmkqakbuczcjpvjbdeofkfimrmbkrfoubjrubbwvsvmmehucjutrcfpgofpfamtfxspcftxzsaizpsieaznavwcvcvyppcwbubafihcuubhgjiijsvjniujyazuyxqwuuawtavsaducrmegvctmsavyorhhinvqrqcqfxbzxulzqlzzogizllomcnahdjluoukcrltshxcwsfnrzwvmcewiexefzevjudvbrdvllhypwyhhanochwvztxdalehsqtsbycpskvjgwxqfpiiidgtkegtdfbetqhcqohtxswlyiahhiyxgczcirtlharewwfohxexddmznbumhxxeyyxsukrdbwuptptmobpypsbrlamdbiiwhvwoywaycxgtgdrrvhlzgyjodqwwquawkwpjuullxfxccjyejppauauqdjrzflhbaadzjjljtbiuxlpyaenguafmlppxrlmzrehoreepusitqazmqhmnlirrecyjelxklnfpjhmklryvetqcfujddxnqhgkmiopscejmqwjzwyolukxhowoorijuvhunipksigpgwunbbthjxrmgniaptdljszjrxphsrxfeodehexfsixbtlqroyttauubmeulkzlfjjfhbpoqejdvhruzphrtdsrheyxttmvybwydmkczstwtrqpgsvhrjzzqyk";//*/generateRandomString(
+                700, 805, 'a', 'z');
+//        std::cerr << text << "\n\n";
         std::vector<size_t> suffixArray = stupidSuffixArray(text);
-        ASSERT_EQ(suffixArray, algorithm.buildSuffixArray(text));
+        std::vector<size_t> suffixArray2 = algorithm.buildSuffixArray(text);
+//        int start = isSuffixArrayEqual(suffixArray, suffixArray2);
+//        for (size_t j = start; j <suffixArray.size();++j) {
+//            std::cerr << suffixArray[j] << ' ' << suffixArray2[j]<<"\n";
+//        }
+//        std::cerr << '\n';
+//        std::cerr << '\n';
+//        std::cerr<< isSuffixArrayEqual(suffixArray, suffixArray2) << "\n\n";
+        ASSERT_EQ(suffixArray, suffixArray2);
     }
 }
 

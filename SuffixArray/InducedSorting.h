@@ -27,16 +27,16 @@ private:
         size_t begin, end, position, sBegin;
     };
 
-    std::vector<size_t> SuffixArrayInducedSorting(const std::string &text);
+    std::vector<size_t> SuffixArrayInducedSorting(const std::vector<long long> &text);
 
-    std::vector<Types> classify(const std::string text) const;
+    std::vector<Types> classify(const std::vector<long long> text) const;
 
     std::vector<LMS> getLMSIndices(const std::vector<Types> &types) const;
 
-    std::vector<InducedSorting::Bucket> separateIntoBuckets(const std::string &text,
+    std::vector<InducedSorting::Bucket> separateIntoBuckets(const std::vector<long long> &text,
                                                             const std::vector<Types> &types);
 
-    std::vector<size_t> induceSuffixArray(const std::string &text,
+    std::vector<size_t> induceSuffixArray(const std::vector<long long> &text,
                                           const std::vector<LMS> &LMSIndices,
                                           const std::vector<Types> &types);
 
@@ -45,13 +45,13 @@ private:
                       std::ostream &output);
 
     std::vector<LMS> sortLMS(const std::vector<LMS> &LMSIndices,
-                             const std::string &text,
+                             const std::vector<long long> &text,
                              const std::vector<Types> types);
 
-    bool isLMS(const std::string &text, size_t index, const std::vector<Types> types);
+    bool getNames(const std::vector<InducedSorting::LMS> &lmsSorted, const std::vector<long long> &text,
+                  const std::vector<InducedSorting::Types> &types, std::vector<long long> &names);
 
-    bool getNames(const std::vector<InducedSorting::LMS> &lmsSorted, const std::string &text,
-                  const std::vector<InducedSorting::Types> &types, std::string &names);
+    std::vector<long long> convertToLongVector(const std::string &text);
 };
 
 
