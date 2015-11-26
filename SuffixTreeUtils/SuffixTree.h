@@ -26,7 +26,7 @@ public:
     // Делает вершину, соотвестующую позиции, явной.
     // Если она была неявная, то разрезает ребро и создает новую явную вершину.
     // Иначе просто возвращает эту явную вершину.
-    SuffixTreeNode *makeExplicit(Position position);
+    SuffixTreeNode *makeExplicit(const Position &position);
 
     // Считает количество различных подстрок в дереве.
     long long int countSubstrings();

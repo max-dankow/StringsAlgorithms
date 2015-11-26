@@ -48,7 +48,7 @@ void SuffixTree::printTree(std::ostream &output) const {
     output << "-------------------------\n";
 }
 
-SuffixTreeNode *SuffixTree::makeExplicit(Position position) {
+SuffixTreeNode *SuffixTree::makeExplicit(const Position &position) {
     SuffixTreeNode *finishNode = position.finish;
     if (position.isExplicit()) {
         return finishNode;

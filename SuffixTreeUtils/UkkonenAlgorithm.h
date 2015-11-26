@@ -10,9 +10,9 @@ public:
     SuffixTree buildSuffixTree(const std::string &text);
 
 private:
-    Position updateTree(SuffixTree &tree, size_t index, Position activePoint);
+    Position updateTree(SuffixTree &tree, size_t index, const Position &activePoint);
 
-    Position findSuffixLink(SuffixTree &tree, Position position);
+    Position findSuffixLink(SuffixTree &tree, const Position &position);
 };
 
 
