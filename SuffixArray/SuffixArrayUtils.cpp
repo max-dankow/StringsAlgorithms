@@ -1,7 +1,7 @@
 #include "SuffixArrayUtils.h"
 
-std::vector<long long> SuffixArrayUtils::computeLCP(const std::string text, const std::vector<size_t> suffixArray) {
-    // todo: тут по идее суффмассив для строки с УЖЕ добавленным $.
+std::vector<long long> SuffixArrayUtils::computeLCP(const std::string text,
+                                                    const std::vector<size_t> suffixArray) {
     std::vector<size_t> pos(text.length());
     std::vector<long long> lcp(text.length());
     for (size_t i = 0; i < text.length(); ++i) {

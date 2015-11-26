@@ -190,15 +190,11 @@ struct Suffix {
 
     std::string text;
     size_t index;
-//    bool operator<(const Suffix &other) {
-//        return this->text < other.text;
-//    }
 };
 
-bool operator<(const Suffix &a, const Suffix &b) {
+static bool operator<(const Suffix &a, const Suffix &b) {
     return a.text < b.text;
 }
-
 
 std::vector<size_t> stupidSuffixArray(const std::string text) {
     std::vector<Suffix> suf;
@@ -214,61 +210,31 @@ std::vector<size_t> stupidSuffixArray(const std::string text) {
 }
 
 TEST(SuffixArrayTests, ManualTexts) {
-    InducedSorting algorithm;
     std::string text = "immissiissippi";
     std::vector<size_t> suffixArray = {13, 6, 0, 10, 3, 7, 2, 1, 12, 11, 5, 9, 4, 8};
-    ASSERT_EQ(suffixArray, algorithm.buildSuffixArray(text));
-    ASSERT_EQ(stupidSuffixArray("caacabccba"), algorithm.buildSuffixArray("caacabccba"));
+    ASSERT_EQ(suffixArray, InducedSorting::buildSuffixArray(text));
+    ASSERT_EQ(stupidSuffixArray("caacabccba"), InducedSorting::buildSuffixArray("caacabccba"));
     ASSERT_EQ(stupidSuffixArray(
             "yngjoqdizwqbavpazpgdralvbjgkjngehyjpyldplbjumixyvdkmdgkhsiwgigafwfricwyggqqsjqwjugcjbnnmsfietnatduewdipleuzxlvhqkjjnratgftmenoecpwwcxbmdcxejjungyacbggyfdbwkpfldyikmmpadepatppzwfipztjgmnjwpbmtajgdxxcahpblpdxkmkqakbuczcjpvjbdeofkfimrmbkrfoubjrubbwvsvmmehucjutrcfpgofpfamtfxspcftxzsaizpsieaznavwcvcvyppcwbubafihcuubhgjiijsvjniujyazuyxqwuuawtavsaducrmegvctmsavyorhhinvqrqcqfxbzxulzqlzzogizllomcnahdjluoukcrltshxcwsfnrzwvmcewiexefzevjudvbrdvllhypwyhhanochwvztxdalehsqtsbycpskvjgwxqfpiiidgtkegtdfbetqhcqohtxswlyiahhiyxgczcirtlharewwfohxexddmznbumhxxeyyxsukrdbwuptptmobpypsbrlamdbiiwhvwoywaycxgtgdrrvhlzgyjodqwwquawkwpjuullxfxccjyejppauauqdjrzflhbaadzjjljtbiuxlpyaenguafmlppxrlmzrehoreepusitqazmqhmnlirrecyjelxklnfpjhmklryvetqcfujddxnqhgkmiopscejmqwjzwyolukxhowoorijuvhunipksigpgwunbbthjxrmgniaptdljszjrxphsrxfeodehexfsixbtlqroyttauubmeulkzlfjjfhbpoqejdvhruzphrtdsrheyxttmvybwydmkczstwtrqpgsvhrjzzqyk"),
-              algorithm.buildSuffixArray(
+              InducedSorting::buildSuffixArray(
                       "yngjoqdizwqbavpazpgdralvbjgkjngehyjpyldplbjumixyvdkmdgkhsiwgigafwfricwyggqqsjqwjugcjbnnmsfietnatduewdipleuzxlvhqkjjnratgftmenoecpwwcxbmdcxejjungyacbggyfdbwkpfldyikmmpadepatppzwfipztjgmnjwpbmtajgdxxcahpblpdxkmkqakbuczcjpvjbdeofkfimrmbkrfoubjrubbwvsvmmehucjutrcfpgofpfamtfxspcftxzsaizpsieaznavwcvcvyppcwbubafihcuubhgjiijsvjniujyazuyxqwuuawtavsaducrmegvctmsavyorhhinvqrqcqfxbzxulzqlzzogizllomcnahdjluoukcrltshxcwsfnrzwvmcewiexefzevjudvbrdvllhypwyhhanochwvztxdalehsqtsbycpskvjgwxqfpiiidgtkegtdfbetqhcqohtxswlyiahhiyxgczcirtlharewwfohxexddmznbumhxxeyyxsukrdbwuptptmobpypsbrlamdbiiwhvwoywaycxgtgdrrvhlzgyjodqwwquawkwpjuullxfxccjyejppauauqdjrzflhbaadzjjljtbiuxlpyaenguafmlppxrlmzrehoreepusitqazmqhmnlirrecyjelxklnfpjhmklryvetqcfujddxnqhgkmiopscejmqwjzwyolukxhowoorijuvhunipksigpgwunbbthjxrmgniaptdljszjrxphsrxfeodehexfsixbtlqroyttauubmeulkzlfjjfhbpoqejdvhruzphrtdsrheyxttmvybwydmkczstwtrqpgsvhrjzzqyk"));
 
 }
 
-long long isSuffixArrayEqual(std::vector<size_t> expected, std::vector<size_t> actual) {
-    if (expected.size() != actual.size()) {
-        return 0;
-    }
-    for (size_t i = 0; i < expected.size(); ++i) {
-        if (expected[i] != actual[i]) {
-            return i;
-        }
-    }
-    return -1;
-}
-
 TEST(SuffixArrayTests, RandomTexts) {
-    InducedSorting algorithm;
     for (size_t i = 0; i < 1000; ++i) {
         std::string text = generateRandomString(1, 10000, 'a', 'z');
-//        std::cerr << text << "\n\n";
-        std::vector<size_t> suffixArray = stupidSuffixArray(text);
-        std::vector<size_t> suffixArray2 = algorithm.buildSuffixArray(text);
-//        int start = isSuffixArrayEqual(suffixArray, suffixArray2);
-//        for (size_t j = start; j <suffixArray.size();++j) {
-//            std::cerr << suffixArray[j] << ' ' << suffixArray2[j]<<"\n";
-//        }
-//        std::cerr << '\n';
-//        std::cerr << '\n';
-//        std::cerr<< isSuffixArrayEqual(suffixArray, suffixArray2) << "\n\n";
-        ASSERT_EQ(suffixArray, suffixArray2);
+        ASSERT_EQ(stupidSuffixArray(text), InducedSorting::buildSuffixArray(text));
     }
 }
 
-
-//TEST(SuffixArrayTests, AllSubstrings) {
-//    SuffixArrayUtils utils;
-//    ASSERT_EQ()
-//}
 // Взаимные тесты суффиксного дерева и массива.
 TEST(CollaborateAllSub, RandomStringsAC100) {
     UkkonenAlgorithm ukkonenAlgorithm;
     for (size_t i = 0; i < 1000; ++i) {
         std::string text = generateRandomString(0, 100, 'a', 'c');
         SuffixTree suffixTree = ukkonenAlgorithm.buildSuffixTree(text);
-        SuffixArrayUtils utils;
-        ASSERT_EQ(suffixTree.countSubstrings(), utils.countSubstrings(text));
+        ASSERT_EQ(suffixTree.countSubstrings(), SuffixArrayUtils::countSubstrings(text));
     }
 }
 
@@ -277,8 +243,7 @@ TEST(CollaborateAllSub, RandomStringsAC10000) {
     for (size_t i = 0; i < 100; ++i) {
         std::string text = generateRandomString(0, 10000, 'a', 'c');
         SuffixTree suffixTree = ukkonenAlgorithm.buildSuffixTree(text);
-        SuffixArrayUtils utils;
-        ASSERT_EQ(suffixTree.countSubstrings(), utils.countSubstrings(text));
+        ASSERT_EQ(suffixTree.countSubstrings(), SuffixArrayUtils::countSubstrings(text));
     }
 }
 
@@ -287,8 +252,7 @@ TEST(CollaborateAllSub, RandomStringsAZ10000) {
     for (size_t i = 0; i < 100; ++i) {
         std::string text = generateRandomString(0, 10000, 'a', 'z');
         SuffixTree suffixTree = ukkonenAlgorithm.buildSuffixTree(text);
-        SuffixArrayUtils utils;
-        ASSERT_EQ(suffixTree.countSubstrings(), utils.countSubstrings(text));
+        ASSERT_EQ(suffixTree.countSubstrings(), SuffixArrayUtils::countSubstrings(text));
     }
 }
 

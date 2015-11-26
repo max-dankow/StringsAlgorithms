@@ -13,7 +13,7 @@
 // Все данные передаются, а не хранятся в классе, в силу того, что алгоритм рекурсивен.
 class InducedSorting {
 public:
-    std::vector<size_t> buildSuffixArray(const std::string text);
+    static std::vector<size_t> buildSuffixArray(const std::string text);
 
     struct LMS {
         LMS(size_t begin, size_t end, size_t index) :
@@ -35,34 +35,34 @@ private:
     };
 
     // Реализует алгоритм построения суффиксного массива Induced Sorting.
-    std::vector<size_t> SuffixArrayInducedSorting(const std::vector<long long> &text) const;
+    static std::vector<size_t> SuffixArrayInducedSorting(const std::vector<long long> &text);
 
     // Определяет типы суффиксов - S или L.
-    std::vector<Types> classify(const std::vector<long long> &text) const;
+    static std::vector<Types> classify(const std::vector<long long> &text);
 
-    std::vector<LMS> getLMSList(const std::vector<Types> &types) const;
+    static std::vector<LMS> getLMSList(const std::vector<Types> &types);
 
-    std::vector<Bucket> separateIntoBuckets(const std::vector<long long> &text,
-                                            const std::vector<Types> &types) const;
+    static std::vector<Bucket> separateIntoBuckets(const std::vector<long long> &text,
+                                                   const std::vector<Types> &types);
 
-    std::vector<size_t> induceSuffixArray(const std::vector<long long> &text,
-                                          const std::vector<LMS> &LMSIndices,
-                                          const std::vector<Types> &types) const;
+    static std::vector<size_t> induceSuffixArray(const std::vector<long long> &text,
+                                                 const std::vector<LMS> &LMSIndices,
+                                                 const std::vector<Types> &types);
 
-    void printBuckets(const std::vector<Bucket> &buckets,
-                      const std::vector<ssize_t> &sa,
-                      std::ostream &output) const;
+    static void printBuckets(const std::vector<Bucket> &buckets,
+                             const std::vector<ssize_t> &sa,
+                             std::ostream &output);
 
-    std::vector<LMS> sortLMSList(const std::vector<LMS> &LMSIndices,
-                                 const std::vector<long long> &text,
-                                 const std::vector<Types> types) const;
+    static std::vector<LMS> sortLMSList(const std::vector<LMS> &LMSIndices,
+                                        const std::vector<long long> &text,
+                                        const std::vector<Types> types);
 
-    bool getNames(const std::vector<LMS> &lmsSorted,
-                  const std::vector<long long> &text,
-                  const std::vector<Types> &types,
-                  std::vector<long long> &names) const;
+    static bool getNames(const std::vector<LMS> &lmsSorted,
+                         const std::vector<long long> &text,
+                         const std::vector<Types> &types,
+                         std::vector<long long> &names);
 
-    std::vector<long long> convertToLongVector(const std::string &text) const;
+    static std::vector<long long> convertToLongVector(const std::string &text);
 };
 
 

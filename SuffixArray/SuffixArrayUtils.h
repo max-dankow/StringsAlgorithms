@@ -8,9 +8,9 @@
 
 class SuffixArrayUtils {
 public:
-    std::vector<long long> computeLCP(const std::string text, const std::vector<size_t> suffixArray);
+    static std::vector<long long> computeLCP(const std::string text, const std::vector<size_t> suffixArray);
 
-    long long countSubstrings(const std::string &text);
+    static long long countSubstrings(const std::string &text);
 };
 
 
