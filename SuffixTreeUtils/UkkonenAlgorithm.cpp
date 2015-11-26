@@ -13,21 +13,21 @@ SuffixTree UkkonenAlgorithm::buildSuffixTree(const std::string &text) {
 
 // Добавляет новый символ в дерево, соттветствунно алгоритму.
 // Возвращает новый Active Point.
-Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, const Position &activePoint) {
+Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, Position activePoint) {
     char letter = tree.text[index];
     SuffixTreeNode *currentNode = nullptr;
     auto currentPosition = activePoint;
     // Пока нет ребра но текущему символу, добавляем и переходим по суффиксным ссылкам.
-    while (!tree.canGo(activePoint, letter)) {
-        currentNode = tree.makeExplicit(activePoint);
+    while (!tree.canGo(currentPosition, letter)) {
+        currentNode = tree.makeExplicit(currentPosition);
         currentPosition = currentNode->getPosition();
         // Подвешиваем новую вершину-букву.
         SuffixTreeNode *newChild = new SuffixTreeNode(currentNode, index, tree.text.length());
         currentNode->addLink(newChild, letter);
         assert(currentNode->canGo(letter));
         // Проходим по неявной суффиксной ссылке.
-        currentPosition = findSuffixLink(tree, activePoint);
-        SuffixTreeNode *explicitSuffixLink = tree.makeExplicit(activePoint);
+        currentPosition = findSuffixLink(tree, currentPosition);
+        SuffixTreeNode *explicitSuffixLink = tree.makeExplicit(currentPosition);
         currentPosition = explicitSuffixLink->getPosition();
         // Устанавливаем найденую суффиксную ссылку.
         if (currentNode->getSuffixLink() == nullptr) {
@@ -35,16 +35,17 @@ Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, const Posi
         }
     }
     try {
-        currentPosition = tree.go(activePoint, letter);
+        currentPosition = tree.go(currentPosition, letter);
     } catch (std::logic_error &error) {
         assert(false);
     }
     return currentPosition;
 }
 
-Position UkkonenAlgorithm::findSuffixLink(SuffixTree &tree, const Position &position) {
+Position UkkonenAlgorithm::findSuffixLink(SuffixTree &tree, Position position) {
     // Если суффиксная ссылка уже известна, то просто вернем ее.
     if (position.isExplicit() && (position.finish->getSuffixLink() != nullptr)) {
+//        parent = position.finish;
         return position.finish->getSuffixLink()->getPosition();
     }
     // Находим ближайшего явного предка.
