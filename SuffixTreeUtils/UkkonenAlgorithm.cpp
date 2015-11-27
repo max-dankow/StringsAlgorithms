@@ -11,9 +11,9 @@ SuffixTree UkkonenAlgorithm::buildSuffixTree(const std::string &text) {
     return suffixTree;
 }
 
-// Добавляет новый символ в дерево, соттветствунно алгоритму.
+// Добавляет новый символ в дерево, соответственно алгоритму.
 // Возвращает новый Active Point.
-Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, Position activePoint) {
+Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, const Position &activePoint) {
     char letter = tree.text[index];
     SuffixTreeNode *currentNode = nullptr;
     auto currentPosition = activePoint;
@@ -42,10 +42,9 @@ Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, Position a
     return currentPosition;
 }
 
-Position UkkonenAlgorithm::findSuffixLink(SuffixTree &tree, Position position) {
+Position UkkonenAlgorithm::findSuffixLink(SuffixTree &tree, const Position &position) {
     // Если суффиксная ссылка уже известна, то просто вернем ее.
     if (position.isExplicit() && (position.finish->getSuffixLink() != nullptr)) {
-//        parent = position.finish;
         return position.finish->getSuffixLink()->getPosition();
     }
     // Находим ближайшего явного предка.
@@ -86,4 +85,5 @@ Position UkkonenAlgorithm::findSuffixLink(SuffixTree &tree, Position position) {
             }
         }
     }
+    assert(false);
 }

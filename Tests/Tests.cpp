@@ -148,19 +148,17 @@ long long stupidCountSubstrings(std::string text) {
 }
 
 TEST(AllSubstringsTests, RandomStringsAZ1000) {
-    UkkonenAlgorithm ukkonenAlgorithm;
     for (size_t i = 0; i < 25; ++i) {
         std::string text = generateRandomString(5, 1000, 'a', 'z');
-        SuffixTree suffixTree = ukkonenAlgorithm.buildSuffixTree(text);
+        SuffixTree suffixTree = UkkonenAlgorithm::buildSuffixTree(text);
         ASSERT_EQ(stupidCountSubstrings(text), suffixTree.countSubstrings());
     }
 }
 
 TEST(AllSubstringsTests, RandomStringsAC100) {
-    UkkonenAlgorithm ukkonenAlgorithm;
     for (size_t i = 0; i < 100; ++i) {
         std::string text = generateRandomString(0, 100, 'a', 'c');
-        SuffixTree suffixTree = ukkonenAlgorithm.buildSuffixTree(text);
+        SuffixTree suffixTree = UkkonenAlgorithm::buildSuffixTree(text);
         ASSERT_EQ(stupidCountSubstrings(text), suffixTree.countSubstrings());
     }
 }
@@ -171,8 +169,7 @@ TEST(DurationUkkonen, Duration) {
     for (int i = 0; i < TEST_NUMBER; ++i) {
         std::string text = generateRandomString(100000, 100000, 'a', 'z');
         auto startTime = std::chrono::steady_clock::now();
-        UkkonenAlgorithm algorithm;
-        SuffixTree tree = algorithm.buildSuffixTree(text);
+        SuffixTree tree = UkkonenAlgorithm::buildSuffixTree(text);
         auto endTime = std::chrono::steady_clock::now();
         std::chrono::milliseconds workTime = std::chrono::milliseconds(
                 std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime));
@@ -230,28 +227,25 @@ TEST(SuffixArrayTests, RandomTexts) {
 
 // Взаимные тесты суффиксного дерева и массива.
 TEST(CollaborateAllSub, RandomStringsAC100) {
-    UkkonenAlgorithm ukkonenAlgorithm;
     for (size_t i = 0; i < 1000; ++i) {
         std::string text = generateRandomString(0, 100, 'a', 'c');
-        SuffixTree suffixTree = ukkonenAlgorithm.buildSuffixTree(text);
+        SuffixTree suffixTree = UkkonenAlgorithm::buildSuffixTree(text);
         ASSERT_EQ(suffixTree.countSubstrings(), SuffixArrayUtils::countSubstrings(text));
     }
 }
 
 TEST(CollaborateAllSub, RandomStringsAC10000) {
-    UkkonenAlgorithm ukkonenAlgorithm;
     for (size_t i = 0; i < 100; ++i) {
         std::string text = generateRandomString(0, 10000, 'a', 'c');
-        SuffixTree suffixTree = ukkonenAlgorithm.buildSuffixTree(text);
+        SuffixTree suffixTree = UkkonenAlgorithm::buildSuffixTree(text);
         ASSERT_EQ(suffixTree.countSubstrings(), SuffixArrayUtils::countSubstrings(text));
     }
 }
 
 TEST(CollaborateAllSub, RandomStringsAZ10000) {
-    UkkonenAlgorithm ukkonenAlgorithm;
     for (size_t i = 0; i < 100; ++i) {
         std::string text = generateRandomString(0, 10000, 'a', 'z');
-        SuffixTree suffixTree = ukkonenAlgorithm.buildSuffixTree(text);
+        SuffixTree suffixTree = UkkonenAlgorithm::buildSuffixTree(text);
         ASSERT_EQ(suffixTree.countSubstrings(), SuffixArrayUtils::countSubstrings(text));
     }
 }

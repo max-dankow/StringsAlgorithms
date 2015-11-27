@@ -33,8 +33,7 @@ public:
 
     std::string text;
 private:
-    SuffixTreeNode *root;
-    SuffixTreeNode *blank;
+    SuffixTreeNode *root, *blank;
 };
 
 #endif //STRINGSEARCHING_SUFFIXTREE_H
