@@ -4,7 +4,7 @@
 #include <memory>
 #include <limits>
 
-SuffixTree::SuffixTree(std::string text) : text(text) {
+SuffixTree::SuffixTree(const std::string &text) : text(text) {
     // Создаем фиктивную вершину для унификации операций.
     blank = new SuffixTreeNode(nullptr, 0, 0);
     root = new SuffixTreeNode(nullptr, std::numeric_limits<size_t>::max(), 0);
@@ -16,11 +16,7 @@ SuffixTree::SuffixTree(std::string text) : text(text) {
     root->setSuffixLink(blank);
 }
 
-SuffixTreeNode *SuffixTree::getRoot() const {
-    return root;
-}
-
-bool SuffixTree::canGo(const Position &position, char letter) {
+bool SuffixTree::canGo(const Position &position, char letter) const {
     if (position.isExplicit()) {
         return position.finish->canGo(letter);
     } else {
@@ -50,24 +46,29 @@ void SuffixTree::printTree(std::ostream &output) const {
 
 SuffixTreeNode *SuffixTree::makeExplicit(const Position &position) {
     SuffixTreeNode *finishNode = position.finish;
+
     if (position.isExplicit()) {
         return finishNode;
     }
+
     size_t currentLetterIndex = finishNode->getLabelEnd() - position.distanceToFinish;
     SuffixTreeNode *parent = finishNode->getParent();
     SuffixTreeNode *newNode = new SuffixTreeNode(parent,
                                                  finishNode->getLabelBegin(),
                                                  currentLetterIndex);
+
     finishNode->setLabelBegin(currentLetterIndex);
     finishNode->setParent(newNode);
     finishNode->setParent(newNode);
-    parent->links.erase(text[newNode->getLabelBegin()]);
+
+    parent->eraseLink(text[newNode->getLabelBegin()]);
     parent->addLink(newNode, text[newNode->getLabelBegin()]);
+
     newNode->addLink(finishNode, text[finishNode->getLabelBegin()]);
     return newNode;
 }
 
-long long int SuffixTree::countSubstrings() {
+long long int SuffixTree::countSubstrings() const {
     return root->countSubstrings() - 1;
 }
 
@@ -75,6 +76,7 @@ SuffixTree::~SuffixTree() {
     delete root;
     // Из blank идут несколько ребер в одну уже удаленную вершину.
     // Очищаем список его детей, что бы не удалять их.
-    blank->links.clear();
+    blank->clearLinks();
     delete blank;
 }
+

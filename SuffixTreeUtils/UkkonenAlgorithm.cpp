@@ -14,7 +14,8 @@ SuffixTree UkkonenAlgorithm::buildSuffixTree(const std::string &text) {
 // Добавляет новый символ в дерево, соответственно алгоритму.
 // Возвращает новый Active Point.
 Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, const Position &activePoint) {
-    char letter = tree.text[index];
+    const std::string &text = tree.getText();
+    char letter = text[index];
     SuffixTreeNode *currentNode = nullptr;
     auto currentPosition = activePoint;
     // Пока нет ребра но текущему символу, добавляем и переходим по суффиксным ссылкам.
@@ -22,7 +23,7 @@ Position UkkonenAlgorithm::updateTree(SuffixTree &tree, size_t index, const Posi
         currentNode = tree.makeExplicit(currentPosition);
         currentPosition = currentNode->getPosition();
         // Подвешиваем новую вершину-букву.
-        SuffixTreeNode *newChild = new SuffixTreeNode(currentNode, index, tree.text.length());
+        SuffixTreeNode *newChild = new SuffixTreeNode(currentNode, index, text.length());
         currentNode->addLink(newChild, letter);
         assert(currentNode->canGo(letter));
         // Проходим по неявной суффиксной ссылке.
@@ -49,14 +50,18 @@ Position UkkonenAlgorithm::findSuffixLink(SuffixTree &tree, const Position &posi
     }
     // Находим ближайшего явного предка.
     SuffixTreeNode *parent = position.finish->getParent();
+
     // Запоминаем, по какой строке придется спускаться после перехода.
-    auto stringBegin = tree.text.begin() + position.finish->getLabelBegin();
-    auto stringEnd = tree.text.begin()
+    const std::string &text = tree.getText();
+    auto stringBegin = text.begin() + position.finish->getLabelBegin();
+    auto stringEnd = text.begin()
                      + position.finish->getLabelEnd()
                      - position.distanceToFinish;
+
     // Осуществляем переход по суффиксной ссылке.
     assert(parent->getSuffixLink() != nullptr);
     SuffixTreeNode *currentNode = parent->getSuffixLink();
+
     // Спускаемся на соответствующую подстроку вниз.
     auto iterator = stringBegin;
     while (iterator != stringEnd) {

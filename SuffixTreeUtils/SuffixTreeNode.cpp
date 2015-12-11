@@ -8,6 +8,14 @@ void SuffixTreeNode::addLink(SuffixTreeNode *node, char letter) {
     links.insert(std::make_pair(letter, Position(node, distance - 1)));
 }
 
+void SuffixTreeNode::eraseLink(char letter) {
+    links.erase(letter);
+}
+
+void SuffixTreeNode::clearLinks() {
+    links.clear();
+}
+
 void SuffixTreeNode::setLabelBegin(size_t labelBegin) {
     SuffixTreeNode::labelBegin = labelBegin;
 }
@@ -82,7 +90,7 @@ void SuffixTreeNode::printNode(std::ostream &output, const std::string &text, si
     }
 }
 
-long long SuffixTreeNode::countSubstrings() {
+long long SuffixTreeNode::countSubstrings() const {
     long long sum = getEdgeLength();
     for (auto pair : links) {
         sum += pair.second.finish->countSubstrings();
@@ -90,7 +98,7 @@ long long SuffixTreeNode::countSubstrings() {
     return sum;
 }
 
-long long int SuffixTreeNode::getEdgeLength() {
+long long int SuffixTreeNode::getEdgeLength() const {
     return (long long int) (getLabelEnd() - getLabelBegin());
 }
 
@@ -102,3 +110,4 @@ SuffixTreeNode::~SuffixTreeNode() {
         }
     }
 }
+

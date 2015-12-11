@@ -42,6 +42,10 @@ public:
     // Добавляет переход из вершины в сторону другой вершины node по заданому символу.
     void addLink(SuffixTreeNode *node, char letter);
 
+    void eraseLink(char letter);
+
+    void clearLinks();
+
     // Индекс первого символа метки ребра, ведущего из предка.
     size_t getLabelBegin() const;
 
@@ -62,10 +66,6 @@ public:
     // Возвращает позицию в дереве, соответствующую данной явной вершине.
     Position getPosition();
 
-    long long int getEdgeLength();
-
-    long long int countSubstrings();
-
     // Указатель на предка.
     SuffixTreeNode * getParent() const;
 
@@ -75,9 +75,12 @@ public:
 
     void setSuffixLink(SuffixTreeNode *suffixLink);
 
-    std::map<char, Position> links;
+    long long int getEdgeLength() const;
+
+    long long int countSubstrings() const;
 
 private:
+    std::map<char, Position> links;
     SuffixTreeNode *parent;
     SuffixTreeNode *suffixLink;
     size_t labelBegin, labelEnd;
