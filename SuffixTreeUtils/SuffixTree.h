@@ -9,7 +9,7 @@ public:
 
     explicit SuffixTree(const std::string &text);
 
-    virtual ~SuffixTree();
+    ~SuffixTree();
 
     SuffixTreeNode *getRoot() const { return root; }
 

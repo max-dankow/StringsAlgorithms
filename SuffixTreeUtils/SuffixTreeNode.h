@@ -34,7 +34,7 @@ public:
         suffixLink = nullptr;
     }
 
-    virtual ~SuffixTreeNode();
+    ~SuffixTreeNode();
 
     // Печатает подстроку, соответствующую ребру из родителя.
     void printNode(std::ostream &output, const std::string &text, size_t offset);
